@@ -1,0 +1,197 @@
+{
+  "info": {
+    "_postman_id": "d304797f-a684-4c73-b511-29a461bb03e0",
+    "name": "Restful API's CRUD Cycle",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "57098679",
+    "_collection_link": "https://go.postman.co/collection/57098679-d304797f-a684-4c73-b511-29a461bb03e0?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Get All Objects",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://api.restful-api.dev/objects",
+          "protocol": "https",
+          "host": [
+            "api",
+            "restful-api",
+            "dev"
+          ],
+          "path": [
+            "objects"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Object By Id",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://api.restful-api.dev/objects/ff808181a067127101a07afa4aaf319b",
+          "protocol": "https",
+          "host": [
+            "api",
+            "restful-api",
+            "dev"
+          ],
+          "path": [
+            "objects",
+            "ff808181a067127101a07afa4aaf319b"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create Object",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"name\": \"Iphone 20 Pro\",\r\n  \"data\": {\r\n    \"year\": 2026,\r\n    \"price\": 700,\r\n    \"CPU model\": \"A19 Bionic\",\r\n    \"Hard disk size\": \"265 GB\"\r\n  }\r\n}\r\n",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://api.restful-api.dev/objects",
+          "protocol": "https",
+          "host": [
+            "api",
+            "restful-api",
+            "dev"
+          ],
+          "path": [
+            "objects"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Update Object",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"name\": \"Iphone 21 Pro\",\r\n  \"data\": {\r\n    \"year\": 2027,\r\n    \"price\": 1000,\r\n    \"CPU model\": \"A19 Bionic\",\r\n    \"Hard disk size\": \"520 GB\"\r\n  }\r\n}\r\n",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://api.restful-api.dev/objects/ff808181a067127101a07afa4aaf319b",
+          "protocol": "https",
+          "host": [
+            "api",
+            "restful-api",
+            "dev"
+          ],
+          "path": [
+            "objects",
+            "ff808181a067127101a07afa4aaf319b"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Update Reserved Object",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"name\": \"Iphone 21 Pro\",\r\n  \"data\": {\r\n    \"year\": 2027,\r\n    \"price\": 1000,\r\n    \"CPU model\": \"A19 Bionic\",\r\n    \"Hard disk size\": \"520 GB\"\r\n  }\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://api.restful-api.dev/objects/1",
+          "protocol": "https",
+          "host": [
+            "api",
+            "restful-api",
+            "dev"
+          ],
+          "path": [
+            "objects",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Partially Update",
+      "request": {
+        "method": "PATCH",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n \"name\": \"Iphone 22 Pro\"\r\n }\r\n",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://api.restful-api.dev/objects/ff808181a067127101a07afa4aaf319b",
+          "protocol": "https",
+          "host": [
+            "api",
+            "restful-api",
+            "dev"
+          ],
+          "path": [
+            "objects",
+            "ff808181a067127101a07afa4aaf319b"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Delete Object",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "https://api.restful-api.dev/objects/ff808181a067127101a07afa4aaf319b",
+          "protocol": "https",
+          "host": [
+            "api",
+            "restful-api",
+            "dev"
+          ],
+          "path": [
+            "objects",
+            "ff808181a067127101a07afa4aaf319b"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

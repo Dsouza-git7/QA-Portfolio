@@ -1,0 +1,50 @@
+{
+  "Test" : {
+    "transaction" : "Test",
+    "sampleCount" : 100,
+    "errorCount" : 0,
+    "errorPct" : 0.0,
+    "meanResTime" : 599.8,
+    "medianResTime" : 561.5,
+    "minResTime" : 515.0,
+    "maxResTime" : 1337.0,
+    "pct1ResTime" : 692.7000000000002,
+    "pct2ResTime" : 861.4999999999999,
+    "pct3ResTime" : 1336.2599999999995,
+    "throughput" : 4.919323101141282,
+    "receivedKBytesPerSec" : 35.26693476977568,
+    "sentKBytesPerSec" : 4.179503025383707
+  },
+  "Total" : {
+    "transaction" : "Total",
+    "sampleCount" : 100,
+    "errorCount" : 0,
+    "errorPct" : 0.0,
+    "meanResTime" : 599.7900000000001,
+    "medianResTime" : 561.5,
+    "minResTime" : 515.0,
+    "maxResTime" : 1337.0,
+    "pct1ResTime" : 692.7000000000002,
+    "pct2ResTime" : 861.4999999999999,
+    "pct3ResTime" : 1336.2599999999995,
+    "throughput" : 4.948535233570863,
+    "receivedKBytesPerSec" : 35.47635837292162,
+    "sentKBytesPerSec" : 4.20432192695962
+  },
+  "https://blazedemo.com/reserve.php" : {
+    "transaction" : "https://blazedemo.com/reserve.php",
+    "sampleCount" : 100,
+    "errorCount" : 0,
+    "errorPct" : 0.0,
+    "meanResTime" : 599.7900000000001,
+    "medianResTime" : 561.5,
+    "minResTime" : 515.0,
+    "maxResTime" : 1337.0,
+    "pct1ResTime" : 692.7000000000002,
+    "pct2ResTime" : 861.4999999999999,
+    "pct3ResTime" : 1336.2599999999995,
+    "throughput" : 4.948535233570863,
+    "receivedKBytesPerSec" : 35.47635837292162,
+    "sentKBytesPerSec" : 4.20432192695962
+  }
+}

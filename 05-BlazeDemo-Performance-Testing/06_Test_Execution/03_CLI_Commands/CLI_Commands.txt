@@ -1,0 +1,18 @@
+
+jmeter -n -t blazedemo-BLAZEMETER.jmx -l results.jtl -e -o report
+
+
+jmeter -n -t Flight_Search.jmx -l results.jtl -e -o report
+
+jmeter -n -t Flight_Selection.jmx -l results.jtl -e -o report
+
+jmeter -n -t Passenger_Info.jmx -l results.jtl -e -o report
+
+jmeter -n -t Purchase_Flight.jmx -l results.jtl -e -o report
+
+jmeter -n -t End_to_End_Flow.jmx -l results.jtl -e -o report
+
+Stress Test 
+
+jmeter -n -t Application_Access.jmx -l results.jtl -e -o report
+

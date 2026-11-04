@@ -1,0 +1,35 @@
+APPLICATION BASE URL
+
+Project Name: BlazeDemo Web Application Performance Testing
+
+Application Name: BlazeDemo – Simple Travel Agency
+
+Application Type: Web Application
+
+Base URL: https://blazedemo.com/
+
+Protocol: HTTPS
+
+Purpose:
+Base URL used for BlazeDemo web application performance testing with Apache JMeter and BlazeMeter.
+
+Performance Testing Workflow:
+BlazeMeter Recording → JMX Generation → JMeter Import and Validation → JMeter CLI Execution → Performance Result Analysis
+
+Performance Testing Tool:
+Apache JMeter 5.6.3
+
+Recording Tool:
+BlazeMeter
+
+Execution Method:
+JMeter Non-GUI / Command-Line Execution
+
+Primary Business Flow:
+Application Access → Flight Search → Flight Selection → Passenger Information → Purchase Completion → Booking Confirmation
+
+Project Folder:
+02_Application_Information/
+
+Tester:
+Thelma Dsouza – QA / Performance Testing

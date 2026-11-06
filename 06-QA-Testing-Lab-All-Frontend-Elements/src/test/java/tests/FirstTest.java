@@ -3,6 +3,7 @@ package tests;
 import base.BaseTest;
 
 import org.testng.Assert;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import pages.AlertsPage;
@@ -22,6 +23,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import listeners.ExtentReportListener;
+
 
 /**
  * FirstTest Class
@@ -35,6 +38,7 @@ import java.util.List;
  * Design Pattern: Page Object Model (POM)
  * Language: Java
  */
+@Listeners(ExtentReportListener.class)
 public class FirstTest extends BaseTest {
 
     @Test

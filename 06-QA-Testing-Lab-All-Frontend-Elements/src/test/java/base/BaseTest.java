@@ -22,6 +22,9 @@ public class BaseTest {
 
     // Shared WebDriver instance accessible by child test classes
     protected WebDriver driver;
+    public WebDriver getDriver() {
+        return driver;
+    }
 
     // ==========================================
     // Browser Setup

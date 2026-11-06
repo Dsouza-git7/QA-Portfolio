@@ -4,12 +4,18 @@ package listeners;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
 import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
 
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+
+import base.BaseTest;
 
 public class ExtentReportListener implements ITestListener {
 
@@ -51,7 +57,45 @@ public class ExtentReportListener implements ITestListener {
 
     @Override
     public void onTestFailure(ITestResult result) {
+
         test.get().fail(result.getThrowable());
+
+        try {
+            WebDriver driver = ((BaseTest) result.getInstance()).getDriver();
+
+            if (driver instanceof TakesScreenshot) {
+
+                Path screenshotDirectory =
+                        Paths.get("target/extent-reports/screenshots");
+
+                Files.createDirectories(screenshotDirectory);
+
+                String screenshotName =
+                        result.getMethod().getMethodName()
+                                + "_" + System.currentTimeMillis() + ".png";
+
+                Path screenshotPath =
+                        screenshotDirectory.resolve(screenshotName);
+
+                byte[] screenshot =
+                        ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
+
+                Files.write(screenshotPath, screenshot);
+
+                String base64Screenshot =
+                        java.util.Base64.getEncoder().encodeToString(screenshot);
+
+                test.get().addScreenCaptureFromBase64String(
+                        base64Screenshot,
+                        screenshotName
+                );
+            }
+
+        } catch (Exception e) {
+            test.get().warning(
+                    "Unable to capture failure screenshot: " + e.getMessage()
+            );
+        }
     }
 
     @Override

@@ -1,3 +1,4 @@
+
 name: Selenium Test Automation
 
 on:
@@ -11,7 +12,7 @@ jobs:
   selenium-tests:
     runs-on: ubuntu-latest
 
-     defaults:
+    defaults:
       run:
         working-directory: ./06-QA-Testing-Lab-All-Frontend-Elements
 

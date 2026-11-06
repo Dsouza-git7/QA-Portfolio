@@ -3,6 +3,7 @@ package base;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 
@@ -22,33 +23,39 @@ public class BaseTest {
     // Shared WebDriver instance accessible by child test classes
     protected WebDriver driver;
 
-
     // ==========================================
     // Browser Setup
     // ==========================================
 
     /**
-     * Launches Chrome, maximises the browser window
-     * and navigates to the local Selenium practice website.
+     * Launches Chrome in headless mode and navigates
+     * to the local Selenium practice website.
      *
      * Runs before each TestNG test method.
      */
     @BeforeMethod
     public void setUp() {
 
-        // Initialise Chrome browser
-        driver = new ChromeDriver();
+        // Configure Chrome browser options
+        ChromeOptions options = new ChromeOptions();
 
-        // Maximise browser window
-        driver.manage().window().maximize();
+        // Enable headless execution for CI environments
+        options.addArguments("--headless=new");
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--window-size=1920,1080");
+
+        // Initialise Chrome browser
+        driver = new ChromeDriver(options);
 
         // Locate the local practice website
-        File file = new File("src/test/resources/SeleniumProject/index.html");
+        File file = new File(
+                "src/test/resources/SeleniumProject/index.html"
+        );
 
-        // Open the practice website
-        driver.get(file.getAbsolutePath());
+        // Open the local practice website using a file URL
+        driver.get(file.toURI().toString());
     }
-
 
     // ==========================================
     // Browser Teardown
@@ -61,6 +68,9 @@ public class BaseTest {
      */
     @AfterMethod
     public void tearDown() {
-        driver.quit();
+
+        if (driver != null) {
+            driver.quit();
+        }
     }
 }

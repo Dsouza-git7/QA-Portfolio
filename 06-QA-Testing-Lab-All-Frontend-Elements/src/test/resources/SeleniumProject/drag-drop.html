@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QA Testing Lab Automation Practice</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .kanban-board {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    .kanban-col {
+      background: #f7fafc;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px;
+      min-height: 280px;
+    }
+    .kanban-col-title {
+      font-size: 12px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.6px; color: var(--text-light);
+      margin-bottom: 12px; padding-bottom: 8px;
+      border-bottom: 2px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .kanban-col-title .count {
+      background: var(--primary); color: #fff;
+      font-size: 11px; padding: 1px 7px; border-radius: 20px;
+    }
+    .kanban-card {
+      background: #fff; border: 1.5px solid var(--border);
+      border-radius: var(--radius); padding: 12px 14px;
+      margin-bottom: 8px; cursor: grab; font-size: 13.5px;
+      font-weight: 500; transition: box-shadow 0.15s, border-color 0.15s;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .kanban-card:hover { border-color: var(--accent); box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    .kanban-card.dragging { opacity: 0.45; cursor: grabbing; }
+    .kanban-col.drag-over { border-color: var(--accent); background: #fffbf0; }
+    .kanban-col.drag-over .kanban-col-title { color: var(--accent); }
+
+    .sort-list {
+      list-style: none;
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .sort-item {
+      background: #fff; border: 1.5px solid var(--border);
+      border-radius: var(--radius); padding: 12px 16px;
+      cursor: grab; font-size: 14px; font-weight: 500;
+      display: flex; align-items: center; gap: 12px;
+      transition: box-shadow 0.15s, border-color 0.15s;
+    }
+    .sort-item:hover { border-color: var(--accent); box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    .sort-item.dragging { opacity: 0.4; cursor: grabbing; }
+    .sort-item .drag-handle { color: var(--text-light); font-size: 16px; }
+    .sort-item.drag-over-top    { border-top: 3px solid var(--accent); }
+    .sort-item.drag-over-bottom { border-bottom: 3px solid var(--accent); }
+
+    .bucket-area {
+      display: flex; gap: 16px; flex-wrap: wrap;
+    }
+    .bucket-source {
+      flex: 1; min-width: 180px;
+    }
+    .bucket-targets {
+      flex: 2; min-width: 280px;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+    }
+    .bucket {
+      border: 2px dashed var(--border); border-radius: var(--radius);
+      padding: 16px; min-height: 150px; background: #f7fafc;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .bucket.drag-over { border-color: var(--accent); background: #fffbf0; }
+    .bucket-label {
+      font-size: 12px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.5px; color: var(--text-light); margin-bottom: 10px;
+    }
+    .chip {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--primary); color: #fff;
+      padding: 5px 12px; border-radius: 20px; font-size: 12.5px;
+      font-weight: 500; margin: 4px; cursor: grab;
+      transition: opacity 0.15s;
+    }
+    .chip.dragging { opacity: 0.4; }
+
+    @media (max-width:700px) {
+      .kanban-board { grid-template-columns: 1fr; }
+      .bucket-targets { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <header id="site-header">
+    <a class="header-brand" id="brand-logo" href="index.html">
+      <div class="header-logo">QTL</div>
+      <div>
+        <div class="header-title">QA Testing Lab</div>
+        <div class="header-subtitle">Automation Practice</div>
+      </div>
+    </a>
+  </header>
+
+  <nav id="main-nav">
+    <a href="index.html"            class="nav-link"        id="nav-home">Home</a>
+    <a href="form-elements.html"    class="nav-link"        id="nav-forms">Form Elements</a>
+    <a href="dropdowns.html"        class="nav-link"        id="nav-dropdowns">Dropdowns</a>
+    <a href="checkboxes-radio.html" class="nav-link"        id="nav-checkboxes">Checkboxes &amp; Radio</a>
+    <a href="tables.html"           class="nav-link"        id="nav-tables">Tables</a>
+    <a href="alerts.html"           class="nav-link"        id="nav-alerts">Alerts &amp; Popups</a>
+    <a href="dynamic-elements.html" class="nav-link"        id="nav-dynamic">Dynamic Elements</a>
+    <a href="iframe.html"           class="nav-link"        id="nav-iframe">iFrame</a>
+    <a href="file-upload.html"      class="nav-link"        id="nav-upload">File Upload</a>
+    <a href="drag-drop.html"        class="nav-link active" id="nav-dragdrop">Drag &amp; Drop</a>
+  </nav>
+
+  <main id="main-content">
+
+    <div class="page-title">
+      <h1>🖱️ Drag &amp; Drop</h1>
+      <p>Practice drag and drop interactions using Selenium's ActionChains.</p>
+    </div>
+
+    <!-- ── Selenium Tip ───────────────────────────────────── -->
+    <div class="card" id="card-dnd-tip">
+      <h2>💡 Selenium Drag &amp; Drop</h2>
+      <div style="background:#fffaf0; border:1px solid #fbd38d; border-radius:var(--radius); padding:16px; font-size:13.5px; line-height:1.9; color:#744210">
+        <code>from selenium.webdriver.common.action_chains import ActionChains</code><br><br>
+        <strong>Method 1 — drag_and_drop:</strong><br>
+        <code>ActionChains(driver).drag_and_drop(source, target).perform()</code><br><br>
+        <strong>Method 2 — drag_and_drop_by_offset:</strong><br>
+        <code>ActionChains(driver).drag_and_drop_by_offset(source, x_offset, y_offset).perform()</code><br><br>
+        <strong>Method 3 — click_and_hold + move + release:</strong><br>
+        <code>ActionChains(driver).click_and_hold(source).move_to_element(target).release().perform()</code>
+      </div>
+    </div>
+
+    <!-- ── Simple Box Drop ────────────────────────────────── -->
+    <div class="card" id="card-simple-dnd">
+      <h2>Simple Drag &amp; Drop <span class="badge">ID · Class · CSS · XPath</span></h2>
+      <div class="locator-tags">
+        <span class="tag tag-id">id</span>
+        <span class="tag tag-class">class</span>
+        <span class="tag tag-css">CSS Selector</span>
+        <span class="tag tag-xpath">XPath</span>
+      </div>
+
+      <div class="drag-container" id="simple-dnd-container">
+        <div class="drag-pool" id="simple-source-pool">
+          <h3>Drag from here</h3>
+          <div class="draggable-item" id="drag-item-1" name="dragItem1"
+               class="draggable-box item-one" draggable="true"
+               data-label="Item 1"
+               ondragstart="onDragStart(event, 'drag-item-1')">
+            📦 Drag Item 1
+          </div>
+          <div class="draggable-item" id="drag-item-2" name="dragItem2"
+               class="draggable-box item-two" draggable="true"
+               data-label="Item 2"
+               ondragstart="onDragStart(event, 'drag-item-2')">
+            🎯 Drag Item 2
+          </div>
+          <div class="draggable-item" id="drag-item-3" name="dragItem3"
+               class="draggable-box item-three" draggable="true"
+               data-label="Item 3"
+               ondragstart="onDragStart(event, 'drag-item-3')">
+            ⭐ Drag Item 3
+          </div>
+        </div>
+
+        <div class="drag-pool" id="simple-target-pool">
+          <h3>Drop here</h3>
+          <div class="drop-zone" id="drop-target-1" name="dropTarget1"
+               class="drop-area target-zone"
+               ondragover="allowDrop(event)"
+               ondragleave="onDragLeave(event)"
+               ondrop="onDrop(event, 'drop-target-1', 'simple-dnd-result')">
+            <p class="drop-zone-label" id="drop-target-1-label">Drop items here</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="result-box" id="simple-dnd-result" style="margin-top:14px">Drag items into the drop zone.</div>
+
+      <div class="btn-group" style="margin-top:10px">
+        <button class="btn btn-outline btn-sm" id="reset-simple-dnd-btn" onclick="resetSimpleDnd()">Reset</button>
+      </div>
+
+      <div class="hint" style="margin-top:10px">
+        Source: <code>By.ID → "drag-item-1"</code> · <code>By.CLASS_NAME → "draggable-box"</code><br>
+        Target: <code>By.ID → "drop-target-1"</code> · <code>By.CSS_SELECTOR → ".target-zone"</code><br>
+        Selenium: <code>ActionChains(driver).drag_and_drop(source, target).perform()</code>
+      </div>
+    </div>
+
+    <!-- ── Kanban Board ───────────────────────────────────── -->
+    <div class="card" id="card-kanban">
+      <h2>Kanban Board <span class="badge">ID · Class · CSS · XPath</span></h2>
+      <div class="locator-tags">
+        <span class="tag tag-id">id</span>
+        <span class="tag tag-class">class</span>
+        <span class="tag tag-css">CSS Selector</span>
+        <span class="tag tag-xpath">XPath</span>
+      </div>
+
+      <p style="margin-bottom:16px; font-size:13.5px; color:var(--text-light)">
+        Drag task cards between columns (Todo → In Progress → Done).
+      </p>
+
+      <div class="kanban-board" id="kanban-board">
+
+        <div class="kanban-col" id="kanban-todo" name="todoColumn"
+             data-col="todo"
+             ondragover="allowDrop(event)" ondragleave="onDragLeave(event)"
+             ondrop="onKanbanDrop(event, 'todo')">
+          <div class="kanban-col-title">
+            To Do <span class="count" id="todo-count">3</span>
+          </div>
+          <div class="kanban-card" id="kanban-card-1" name="kanbanTask1"
+               data-task="Write test cases" draggable="true"
+               ondragstart="onDragStart(event, 'kanban-card-1')">
+            📋 Write test cases
+          </div>
+          <div class="kanban-card" id="kanban-card-2" name="kanbanTask2"
+               data-task="Set up test environment" draggable="true"
+               ondragstart="onDragStart(event, 'kanban-card-2')">
+            🛠️ Set up environment
+          </div>
+          <div class="kanban-card" id="kanban-card-3" name="kanbanTask3"
+               data-task="Review requirements" draggable="true"
+               ondragstart="onDragStart(event, 'kanban-card-3')">
+            📄 Review requirements
+          </div>
+        </div>
+
+        <div class="kanban-col" id="kanban-inprogress" name="inProgressColumn"
+             data-col="inprogress"
+             ondragover="allowDrop(event)" ondragleave="onDragLeave(event)"
+             ondrop="onKanbanDrop(event, 'inprogress')">
+          <div class="kanban-col-title">
+            In Progress <span class="count" id="inprogress-count">1</span>
+          </div>
+          <div class="kanban-card" id="kanban-card-4" name="kanbanTask4"
+               data-task="Automate login tests" draggable="true"
+               ondragstart="onDragStart(event, 'kanban-card-4')">
+            ⚙️ Automate login tests
+          </div>
+        </div>
+
+        <div class="kanban-col" id="kanban-done" name="doneColumn"
+             data-col="done"
+             ondragover="allowDrop(event)" ondragleave="onDragLeave(event)"
+             ondrop="onKanbanDrop(event, 'done')">
+          <div class="kanban-col-title">
+            Done <span class="count" id="done-count">1</span>
+          </div>
+          <div class="kanban-card" id="kanban-card-5" name="kanbanTask5"
+               data-task="Install Selenium" draggable="true"
+               ondragstart="onDragStart(event, 'kanban-card-5')">
+            ✅ Install Selenium
+          </div>
+        </div>
+
+      </div>
+
+      <div class="result-box" id="kanban-result" style="margin-top:14px">Drag cards between columns.</div>
+
+      <div class="hint" style="margin-top:10px">
+        Card locators: <code>By.ID → "kanban-card-1"</code> · <code>By.CLASS_NAME → "kanban-card"</code><br>
+        Column locators: <code>By.ID → "kanban-todo"</code> · <code>By.ID → "kanban-done"</code><br>
+        Move card: <code>ActionChains(driver).drag_and_drop(card, column).perform()</code><br>
+        Verify: <code>driver.find_element(By.CSS_SELECTOR, "#kanban-done .kanban-card")</code>
+      </div>
+    </div>
+
+    <!-- ── Chip Buckets ───────────────────────────────────── -->
+    <div class="card" id="card-chip-sort">
+      <h2>Sort into Categories <span class="badge">data-* · CSS · XPath</span></h2>
+      <div class="locator-tags">
+        <span class="tag tag-id">id</span>
+        <span class="tag tag-class">class</span>
+        <span class="tag tag-css">CSS Selector</span>
+        <span class="tag tag-xpath">XPath</span>
+      </div>
+
+      <p style="margin-bottom:14px; font-size:13.5px; color:var(--text-light)">
+        Drag each technology chip into its correct category bucket.
+      </p>
+
+      <div class="bucket-area" id="bucket-area">
+        <div class="bucket-source" id="chip-source-pool">
+          <div class="bucket-label">Technologies</div>
+          <div id="chip-selenium"   class="chip tech-chip" data-category="automation" draggable="true" ondragstart="onDragStart(event, 'chip-selenium')">🤖 Selenium</div>
+          <div id="chip-react"      class="chip tech-chip" data-category="frontend"   draggable="true" ondragstart="onDragStart(event, 'chip-react')">⚛️ React</div>
+          <div id="chip-pytest"     class="chip tech-chip" data-category="automation" draggable="true" ondragstart="onDragStart(event, 'chip-pytest')">🧪 PyTest</div>
+          <div id="chip-django"     class="chip tech-chip" data-category="backend"    draggable="true" ondragstart="onDragStart(event, 'chip-django')">🐍 Django</div>
+          <div id="chip-vue"        class="chip tech-chip" data-category="frontend"   draggable="true" ondragstart="onDragStart(event, 'chip-vue')">💚 Vue.js</div>
+          <div id="chip-fastapi"    class="chip tech-chip" data-category="backend"    draggable="true" ondragstart="onDragStart(event, 'chip-fastapi')">⚡ FastAPI</div>
+          <div id="chip-playwright" class="chip tech-chip" data-category="automation" draggable="true" ondragstart="onDragStart(event, 'chip-playwright')">🎭 Playwright</div>
+          <div id="chip-nextjs"     class="chip tech-chip" data-category="frontend"   draggable="true" ondragstart="onDragStart(event, 'chip-nextjs')">▲ Next.js</div>
+        </div>
+
+        <div class="bucket-targets" id="bucket-targets">
+          <div class="bucket" id="bucket-automation" name="automationBucket"
+               data-accept="automation"
+               ondragover="allowDrop(event)" ondragleave="onDragLeave(event)"
+               ondrop="onBucketDrop(event, 'automation')">
+            <div class="bucket-label">🤖 Automation</div>
+          </div>
+          <div class="bucket" id="bucket-frontend" name="frontendBucket"
+               data-accept="frontend"
+               ondragover="allowDrop(event)" ondragleave="onDragLeave(event)"
+               ondrop="onBucketDrop(event, 'frontend')">
+            <div class="bucket-label">🎨 Frontend</div>
+          </div>
+          <div class="bucket" id="bucket-backend" name="backendBucket"
+               data-accept="backend"
+               ondragover="allowDrop(event)" ondragleave="onDragLeave(event)"
+               ondrop="onBucketDrop(event, 'backend')">
+            <div class="bucket-label">🖥️ Backend</div>
+          </div>
+          <div class="bucket" id="bucket-misc" name="miscBucket"
+               data-accept="any"
+               ondragover="allowDrop(event)" ondragleave="onDragLeave(event)"
+               ondrop="onBucketDrop(event, 'any')">
+            <div class="bucket-label">📦 Misc</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="result-box" id="bucket-result" style="margin-top:14px">Drag chips into their category buckets.</div>
+
+      <div class="hint" style="margin-top:10px">
+        Chip locators: <code>By.ID → "chip-selenium"</code> · <code>By.CLASS_NAME → "tech-chip"</code><br>
+        Bucket locators: <code>By.ID → "bucket-automation"</code> · <code>By.CSS_SELECTOR → ".bucket[data-accept='frontend']"</code><br>
+        XPath by data attribute: <code>By.XPATH → "//div[@data-accept='backend']"</code>
+      </div>
+    </div>
+
+  </main>
+
+  <footer id="site-footer">
+    <p>© 2026 <span>QA Testing Lab</span> — Automation Practice by TND</p>
+  </footer>
+
+  <script>
+    let draggedId = null;
+
+    function onDragStart(e, id) {
+      draggedId = id;
+      e.dataTransfer.effectAllowed = 'move';
+      setTimeout(() => document.getElementById(id)?.classList.add('dragging'), 0);
+    }
+
+    function allowDrop(e) {
+      e.preventDefault();
+      e.currentTarget.classList.add('drag-over');
+    }
+
+    function onDragLeave(e) {
+      e.currentTarget.classList.remove('drag-over');
+    }
+
+    /* ── Simple drop ── */
+    function onDrop(e, zoneId, resultId) {
+      e.preventDefault();
+      e.currentTarget.classList.remove('drag-over');
+      const el = document.getElementById(draggedId);
+      if (!el) return;
+      el.classList.remove('dragging');
+      e.currentTarget.appendChild(el);
+      const label = e.currentTarget.querySelector('.drop-zone-label');
+      if (label) label.style.display = 'none';
+      const box = document.getElementById(resultId);
+      box.textContent = `✅ "${el.textContent.trim()}" dropped into zone "${zoneId}"`;
+      box.classList.add('has-result');
+    }
+
+    /* ── Kanban drop ── */
+    function onKanbanDrop(e, col) {
+      e.preventDefault();
+      e.currentTarget.classList.remove('drag-over');
+      const el = document.getElementById(draggedId);
+      if (!el) return;
+      el.classList.remove('dragging');
+      e.currentTarget.appendChild(el);
+      updateKanbanCounts();
+      const box = document.getElementById('kanban-result');
+      box.textContent = `✅ "${el.dataset.task}" moved to "${col}"`;
+      box.classList.add('has-result');
+    }
+
+    function updateKanbanCounts() {
+      ['todo','inprogress','done'].forEach(col => {
+        const count = document.querySelectorAll(`#kanban-${col} .kanban-card`).length;
+        document.getElementById(`${col}-count`).textContent = count;
+      });
+    }
+
+    /* ── Bucket drop ── */
+    function onBucketDrop(e, accept) {
+      e.preventDefault();
+      e.currentTarget.classList.remove('drag-over');
+      const el = document.getElementById(draggedId);
+      if (!el) return;
+      el.classList.remove('dragging');
+      e.currentTarget.appendChild(el);
+      const isCorrect = accept === 'any' || el.dataset.category === accept;
+      const box = document.getElementById('bucket-result');
+      box.textContent = isCorrect
+        ? `✅ Correct! "${el.textContent.trim()}" belongs to "${accept}"`
+        : `⚠️ "${el.textContent.trim()}" may not belong in "${accept}" — its category is "${el.dataset.category}"`;
+      box.classList.add('has-result');
+    }
+
+    /* ── Simple DnD reset ── */
+    function resetSimpleDnd() {
+      const pool = document.getElementById('simple-source-pool');
+      ['drag-item-1','drag-item-2','drag-item-3'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) pool.appendChild(el);
+      });
+      const zone = document.getElementById('drop-target-1');
+      const label = zone.querySelector('.drop-zone-label');
+      if (label) label.style.display = '';
+      const box = document.getElementById('simple-dnd-result');
+      box.textContent = 'Drag items into the drop zone.';
+      box.classList.remove('has-result');
+    }
+
+    /* Clear dragging class on dragend */
+    document.addEventListener('dragend', () => {
+      if (draggedId) document.getElementById(draggedId)?.classList.remove('dragging');
+    });
+  </script>
+</body>
+</html>

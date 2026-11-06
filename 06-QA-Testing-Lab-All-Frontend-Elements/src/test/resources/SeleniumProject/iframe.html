@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QA Testing Lab Automation Practice</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <header id="site-header">
+    <a class="header-brand" id="brand-logo" href="index.html">
+      <div class="header-logo">QTL</div>
+      <div>
+        <div class="header-title">QA Testing Lab</div>
+        <div class="header-subtitle">Automation Practice</div>
+      </div>
+    </a>
+  </header>
+
+  <nav id="main-nav">
+    <a href="index.html"            class="nav-link"        id="nav-home">Home</a>
+    <a href="form-elements.html"    class="nav-link"        id="nav-forms">Form Elements</a>
+    <a href="dropdowns.html"        class="nav-link"        id="nav-dropdowns">Dropdowns</a>
+    <a href="checkboxes-radio.html" class="nav-link"        id="nav-checkboxes">Checkboxes &amp; Radio</a>
+    <a href="tables.html"           class="nav-link"        id="nav-tables">Tables</a>
+    <a href="alerts.html"           class="nav-link"        id="nav-alerts">Alerts &amp; Popups</a>
+    <a href="dynamic-elements.html" class="nav-link"        id="nav-dynamic">Dynamic Elements</a>
+    <a href="iframe.html"           class="nav-link active" id="nav-iframe">iFrame</a>
+    <a href="file-upload.html"      class="nav-link"        id="nav-upload">File Upload</a>
+    <a href="drag-drop.html"        class="nav-link"        id="nav-dragdrop">Drag &amp; Drop</a>
+  </nav>
+
+  <main id="main-content">
+
+    <div class="page-title">
+      <h1>🖼️ iFrame Practice</h1>
+      <p>Practice switching into and out of frames, and interacting with elements inside them.</p>
+    </div>
+
+    <!-- ── How iFrames Work ───────────────────────────────── -->
+    <div class="card" id="card-iframe-info">
+      <h2>How to Handle iFrames in Selenium</h2>
+      <div class="locator-tags">
+        <span class="tag tag-id">id</span>
+        <span class="tag tag-name">name</span>
+        <span class="tag tag-css">CSS Selector</span>
+        <span class="tag tag-xpath">XPath</span>
+      </div>
+      <div style="background:#fffaf0; border:1px solid #fbd38d; border-radius:var(--radius); padding:16px; font-size:13.5px; line-height:1.8; color:#744210">
+        <strong>Step 1 — Switch into the frame:</strong><br>
+        <code>driver.switch_to.frame("practice-iframe")</code> &nbsp;← by name or id<br>
+        <code>driver.switch_to.frame(driver.find_element(By.ID, "practice-iframe"))</code> &nbsp;← by element<br>
+        <code>driver.switch_to.frame(0)</code> &nbsp;← by index<br><br>
+        <strong>Step 2 — Interact with elements inside the frame normally.</strong><br><br>
+        <strong>Step 3 — Switch back to main page:</strong><br>
+        <code>driver.switch_to.default_content()</code> &nbsp;← back to top-level<br>
+        <code>driver.switch_to.parent_frame()</code> &nbsp;← one level up (for nested frames)
+      </div>
+    </div>
+
+    <!-- ── Single iFrame ──────────────────────────────────── -->
+    <div class="card" id="card-single-iframe">
+      <h2>Single iFrame <span class="badge">switch_to.frame · default_content</span></h2>
+      <div class="locator-tags">
+        <span class="tag tag-id">id</span>
+        <span class="tag tag-name">name</span>
+        <span class="tag tag-css">CSS Selector</span>
+        <span class="tag tag-xpath">XPath</span>
+      </div>
+
+      <p style="margin-bottom:14px; font-size:13.5px; color:var(--text-light)">
+        The iframe below has <code>id="practice-iframe"</code> and <code>name="practiceFrame"</code>.
+        Switch into it, fill the form, then switch back.
+      </p>
+
+      <iframe
+        id="practice-iframe"
+        name="practiceFrame"
+        class="practice-frame single-iframe"
+        src="iframe-content.html"
+        height="340"
+        title="Practice iFrame">
+      </iframe>
+
+      <div class="hint" style="margin-top:14px">
+        Switch by ID:   <code>driver.switch_to.frame("practice-iframe")</code><br>
+        Switch by name: <code>driver.switch_to.frame("practiceFrame")</code><br>
+        Switch by element: <code>driver.switch_to.frame(driver.find_element(By.CSS_SELECTOR, "iframe#practice-iframe"))</code><br>
+        Inside frame — type in username: <code>driver.find_element(By.ID, "iframe-username").send_keys("student")</code><br>
+        Switch back: <code>driver.switch_to.default_content()</code>
+      </div>
+    </div>
+
+    <!-- ── iFrame by Index ────────────────────────────────── -->
+    <div class="card" id="card-iframe-index">
+      <h2>Multiple iFrames (by Index) <span class="badge">switch_to.frame(index)</span></h2>
+      <div class="locator-tags">
+        <span class="tag tag-id">id</span>
+        <span class="tag tag-css">CSS Selector</span>
+        <span class="tag tag-xpath">XPath</span>
+        <span class="tag tag-tag">Tag Name</span>
+      </div>
+
+      <p style="margin-bottom:14px; font-size:13.5px; color:var(--text-light)">
+        There are two iframes on this section. Switch to each by index (0 and 1) or by their id/name.
+      </p>
+
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px">
+        <div>
+          <p style="font-size:12px; font-weight:700; color:var(--text-light); margin-bottom:8px; text-transform:uppercase; letter-spacing:0.5px">
+            Frame Index 0 · id="iframe-one"
+          </p>
+          <iframe
+            id="iframe-one"
+            name="frameOne"
+            class="indexed-iframe frame-index-0"
+            src="iframe-content.html"
+            height="260"
+            title="First iFrame">
+          </iframe>
+        </div>
+        <div>
+          <p style="font-size:12px; font-weight:700; color:var(--text-light); margin-bottom:8px; text-transform:uppercase; letter-spacing:0.5px">
+            Frame Index 1 · id="iframe-two"
+          </p>
+          <iframe
+            id="iframe-two"
+            name="frameTwo"
+            class="indexed-iframe frame-index-1"
+            src="iframe-content.html"
+            height="260"
+            title="Second iFrame">
+          </iframe>
+        </div>
+      </div>
+
+      <div class="hint" style="margin-top:14px">
+        Count all frames: <code>len(driver.find_elements(By.TAG_NAME, "iframe"))</code><br>
+        Switch to first:  <code>driver.switch_to.frame(0)</code> or <code>driver.switch_to.frame("frameOne")</code><br>
+        Switch to second: <code>driver.switch_to.frame(1)</code> or <code>driver.switch_to.frame("frameTwo")</code><br>
+        Back to page:     <code>driver.switch_to.default_content()</code>
+      </div>
+    </div>
+
+    <!-- ── Outside-frame elements ─────────────────────────── -->
+    <div class="card" id="card-outside-frame">
+      <h2>Elements Outside the Frame <span class="badge">default_content · context switch</span></h2>
+      <div class="locator-tags">
+        <span class="tag tag-id">id</span>
+        <span class="tag tag-class">class</span>
+        <span class="tag tag-xpath">XPath</span>
+      </div>
+
+      <p style="margin-bottom:14px; font-size:13.5px; color:var(--text-light)">
+        After switching into a frame, you cannot access elements outside it until you switch back.
+        Practice the sequence: interact in frame → switch back → interact on page.
+      </p>
+
+      <div style="display:flex; gap:12px; flex-wrap:wrap; align-items:center">
+        <input type="text" id="outside-input" name="outsideInput"
+               class="outside-frame-input main-page-input"
+               placeholder="I am outside the iFrame"
+               style="max-width:320px" />
+        <button class="btn btn-primary" id="outside-btn" name="outsideButton"
+                class="outside-frame-button"
+                onclick="document.getElementById('outside-result').textContent='✅ Outside button clicked! (after switch_to.default_content)'; document.getElementById('outside-result').classList.add('has-result')">
+          Click Me (Outside Frame)
+        </button>
+      </div>
+
+      <div class="result-box" id="outside-result" style="margin-top:14px">
+        This element is on the main page, not inside any frame.
+      </div>
+
+      <div class="hint" style="margin-top:10px">
+        Sequence: <code>driver.switch_to.frame("practice-iframe")</code> →
+        <em>do stuff inside frame</em> →
+        <code>driver.switch_to.default_content()</code> →
+        <code>driver.find_element(By.ID, "outside-btn").click()</code>
+      </div>
+    </div>
+
+  </main>
+
+  <footer id="site-footer">
+    <p>© 2026 <span>QA Testing Lab</span> — Automation Practice by TND</p>
+  </footer>
+
+</body>
+</html>

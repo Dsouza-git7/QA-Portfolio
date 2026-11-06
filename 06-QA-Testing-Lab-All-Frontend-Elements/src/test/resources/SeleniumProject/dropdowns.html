@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QA Testing Lab Automation Practice</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    /* Custom dropdown styles */
+    .custom-dropdown { position: relative; width: 100%; }
+    .custom-dropdown-toggle {
+      width: 100%; padding: 10px 14px; border: 1.5px solid var(--border);
+      border-radius: var(--radius); font-size: 14px; background: #fff;
+      cursor: pointer; display: flex; justify-content: space-between;
+      align-items: center; font-family: inherit; color: var(--text);
+      transition: border-color 0.2s;
+    }
+    .custom-dropdown-toggle:focus,
+    .custom-dropdown-toggle.open { border-color: var(--primary); }
+    .custom-dropdown-toggle .arrow { transition: transform 0.2s; }
+    .custom-dropdown-toggle.open .arrow { transform: rotate(180deg); }
+    .custom-dropdown-menu {
+      display: none; position: absolute; top: calc(100% + 4px); left: 0;
+      width: 100%; background: #fff; border: 1.5px solid var(--primary);
+      border-radius: var(--radius); box-shadow: var(--shadow);
+      z-index: 200; overflow: hidden;
+    }
+    .custom-dropdown-menu.open { display: block; }
+    .custom-dropdown-option {
+      padding: 10px 16px; font-size: 14px; cursor: pointer;
+      transition: background 0.15s; color: var(--text);
+    }
+    .custom-dropdown-option:hover { background: #edf2f7; }
+    .custom-dropdown-option.selected { background: var(--primary); color: #fff; }
+  </style>
+</head>
+<body>
+
+  <header id="site-header">
+    <a class="header-brand" id="brand-logo" href="index.html">
+      <div class="header-logo">QTL</div>
+      <div>
+        <div class="header-title">QA Testing Lab</div>
+        <div class="header-subtitle">Automation Practice</div>
+      </div>
+    </a>
+  </header>
+
+  <nav id="main-nav">
+    <a href="index.html"            class="nav-link"        id="nav-home">Home</a>
+    <a href="form-elements.html"    class="nav-link"        id="nav-forms">Form Elements</a>
+    <a href="dropdowns.html"        class="nav-link active" id="nav-dropdowns">Dropdowns</a>
+    <a href="checkboxes-radio.html" class="nav-link"        id="nav-checkboxes">Checkboxes &amp; Radio</a>
+    <a href="tables.html"           class="nav-link"        id="nav-tables">Tables</a>
+    <a href="alerts.html"           class="nav-link"        id="nav-alerts">Alerts &amp; Popups</a>
+    <a href="dynamic-elements.html" class="nav-link"        id="nav-dynamic">Dynamic Elements</a>
+    <a href="iframe.html"           class="nav-link"        id="nav-iframe">iFrame</a>
+    <a href="file-upload.html"      class="nav-link"        id="nav-upload">File Upload</a>
+    <a href="drag-drop.html"        class="nav-link"        id="nav-dragdrop">Drag &amp; Drop</a>
+  </nav>
+
+  <main id="main-content">
+
+    <div class="page-title">
+      <h1>📋 Dropdowns &amp; Lists</h1>
+      <p>Practice selecting options from native HTML selects and custom dropdown components.</p>
+    </div>
+
+    <!-- ── Single Select ──────────────────────────────────── -->
+    <div class="card" id="card-single-select">
+      <h2>Single Select Dropdown <span class="badge">ID · Name · CSS · XPath</span></h2>
+      <div class="locator-tags">
+        <span class="tag tag-id">id</span>
+        <span class="tag tag-name">name</span>
+        <span class="tag tag-css">CSS Selector</span>
+        <span class="tag tag-xpath">XPath</span>
+        <span class="tag tag-tag">Tag Name</span>
+      </div>
+
+      <div class="form-group">
+        <label for="country-select">Select Country</label>
+        <select id="country-select" name="country" class="country-dropdown single-select"
+                onchange="showResult('country-result', 'Selected: ' + this.value)">
+          <option value="">-- Choose a country --</option>
+          <option value="us">United States</option>
+          <option value="uk">United Kingdom</option>
+          <option value="ca">Canada</option>
+          <option value="au">Australia</option>
+          <option value="eg">Egypt</option>
+          <option value="de">Germany</option>
+          <option value="fr">France</option>
+          <option value="jp">Japan</option>
+          <option value="in">India</option>
+          <option value="br">Brazil</option>
+        </select>
+        <div class="hint">
+          Locators: <code>By.ID → "country-select"</code> · <code>By.NAME → "country"</code> ·
+          <code>By.TAG_NAME → "select"</code><br>
+          Select value: <code>Select(driver.find_element(By.ID, "country-select")).select_by_visible_text("Egypt")</code>
+        </div>
+      </div>
+      <div class="result-box" id="country-result">Select a country to see the result.</div>
+    </div>
+
+    <!-- ── Dropdowns Chained ───────────────────────────────── -->
+    <div class="card" id="card-chained-selects">
+      <h2>Chained / Dependent Dropdowns <span class="badge">XPath · CSS nth-child</span></h2>
+      <div class="locator-tags">
+        <span class="tag tag-id">id</span>
+        <span class="tag tag-css">CSS Selector</span>
+        <span class="tag tag-xpath">XPath</span>
+      </div>
+
+      <div class="form-group">
+        <label for="continent-select">Select Continent</label>
+        <select id="continent-select" name="continent" class="continent-dropdown chained-select"
+                onchange="updateCities(this.value)">
+          <option value="">-- Choose a continent --</option>
+          <option value="africa">Africa</option>
+          <option value="asia">Asia</option>
+          <option value="europe">Europe</option>
+          <option value="americas">Americas</option>
+        </select>
+        <div class="hint">Step 1 — Locators: <code>By.ID → "continent-select"</code></div>
+      </div>
+
+      <div class="form-group">
+        <label for="city-select">Select City</label>
+        <select id="city-select" name="city" class="city-dropdown chained-select" disabled
+                onchange="showResult('chained-result', 'Selected: ' + this.value)">
+          <option value="">-- Choose continent first --</option>
+        </select>
+        <div class="hint">
+          Step 2 — Locators: <code>By.ID → "city-select"</code> ·
+          <code>By.XPATH → "//select[@id='city-select']"</code>
+        </div>
+      </div>
+      <div class="result-box" id="chained-result">Select continent then city.</div>
+    </div>
+
+    <!-- ── Multi Select ───────────────────────────────────── -->
+    <div class="card" id="card-multi-select">
+      <h2>Multi-Select List <span class="badge">ID · CSS · XPath</span></h2>
+      <div class="locator-tags">
+        <span class="tag tag-id">id</span>
+        <span class="tag tag-css">CSS Selector</span>
+        <span class="tag tag-xpath">XPath</span>
+      </div>
+
+      <div class="form-group">
+        <label for="skills-select">Select Skills (hold Ctrl/Cmd for multiple)</label>
+        <select id="skills-select" name="skills" class="skills-multiselect multi-select"
+                multiple size="7"
+                onchange="showMultiResult()">
+          <option value="python"     class="skill-option">Python</option>
+          <option value="java"       class="skill-option">Java</option>
+          <option value="javascript" class="skill-option">JavaScript</option>
+          <option value="selenium"   class="skill-option">Selenium</option>
+          <option value="cypress"    class="skill-option">Cypress</option>
+          <option value="playwright" class="skill-option">Playwright</option>
+          <option value="appium"     class="skill-option">Appium</option>
+          <option value="pytest"     class="skill-option">PyTest</option>
+          <option value="junit"      class="skill-option">JUnit</option>
+        </select>
+        <div class="hint">
+          Locators: <code>By.ID → "skills-select"</code> · <code>By.CSS_SELECTOR → "select[multiple]"</code><br>
+          Multi-select: <code>Select(element).select_by_visible_text("Selenium")</code>
+        </div>
+      </div>
+      <div class="result-box" id="multi-result">Select one or more skills above.</div>
+    </div>
+
+    <!-- ── Size Select ────────────────────────────────────── -->
+    <div class="card" id="card-size-select">
+      <h2>Select by Index / Value / Text <span class="badge">XPath · CSS</span></h2>
+      <div class="locator-tags">
+        <span class="tag tag-id">id</span>
+        <span class="tag tag-xpath">XPath</span>
+        <span class="tag tag-css">CSS Selector</span>
+      </div>
+
+      <div class="form-group">
+        <label for="priority-select">Task Priority</label>
+        <select id="priority-select" name="priority" class="priority-dropdown"
+                onchange="showResult('priority-result', 'Priority: ' + this.options[this.selectedIndex].text + ' (value=' + this.value + ', index=' + this.selectedIndex + ')')">
+          <option value="">-- Select priority --</option>
+          <option value="low"      class="priority-option priority-low">Low</option>
+          <option value="medium"   class="priority-option priority-medium">Medium</option>
+          <option value="high"     class="priority-option priority-high">High</option>
+          <option value="critical" class="priority-option priority-critical">Critical</option>
+        </select>
+        <div class="hint">
+          Practice: <code>select_by_value("high")</code> · <code>select_by_index(2)</code> ·
+          <code>select_by_visible_text("High")</code>
+        </div>
+      </div>
+      <div class="result-box" id="priority-result">Select a priority above.</div>
+    </div>
+
+    <!-- ── Custom Dropdown ────────────────────────────────── -->
+    <div class="card" id="card-custom-dropdown">
+      <h2>Custom Dropdown (div-based) <span class="badge">Class · XPath · CSS</span></h2>
+      <div class="locator-tags">
+        <span class="tag tag-id">id</span>
+        <span class="tag tag-class">class</span>
+        <span class="tag tag-css">CSS Selector</span>
+        <span class="tag tag-xpath">XPath</span>
+      </div>
+
+      <p style="margin-bottom:14px; font-size:13.5px; color:var(--text-light)">
+        This dropdown is built from <code>&lt;div&gt;</code> elements — not a native <code>&lt;select&gt;</code>.
+        You must click to open it, then click an option. Great for XPath and CSS practice.
+      </p>
+
+      <div class="form-group">
+        <label>Select Programming Language</label>
+        <div class="custom-dropdown" id="custom-lang-dropdown">
+          <button type="button"
+                  id="custom-dropdown-toggle"
+                  class="custom-dropdown-toggle"
+                  aria-expanded="false"
+                  aria-haspopup="listbox"
+                  onclick="toggleCustomDropdown()">
+            <span id="custom-dropdown-value" class="dropdown-selected-text">-- Choose a language --</span>
+            <span class="arrow">▼</span>
+          </button>
+          <div id="custom-dropdown-menu"
+               class="custom-dropdown-menu"
+               role="listbox">
+            <div class="custom-dropdown-option" id="option-python"     data-value="python"     role="option" onclick="selectCustomOption(this)">Python</div>
+            <div class="custom-dropdown-option" id="option-java"       data-value="java"       role="option" onclick="selectCustomOption(this)">Java</div>
+            <div class="custom-dropdown-option" id="option-javascript" data-value="javascript" role="option" onclick="selectCustomOption(this)">JavaScript</div>
+            <div class="custom-dropdown-option" id="option-csharp"     data-value="csharp"     role="option" onclick="selectCustomOption(this)">C#</div>
+            <div class="custom-dropdown-option" id="option-ruby"       data-value="ruby"       role="option" onclick="selectCustomOption(this)">Ruby</div>
+            <div class="custom-dropdown-option" id="option-go"         data-value="go"         role="option" onclick="selectCustomOption(this)">Go</div>
+          </div>
+        </div>
+        <div class="hint">
+          Step 1 — Click toggle: <code>By.ID → "custom-dropdown-toggle"</code><br>
+          Step 2 — Click option: <code>By.ID → "option-python"</code> ·
+          <code>By.XPATH → "//div[@data-value='python']"</code> ·
+          <code>By.CSS_SELECTOR → ".custom-dropdown-option[data-value='python']"</code>
+        </div>
+      </div>
+      <div class="result-box" id="custom-result">Select a language from the custom dropdown.</div>
+    </div>
+
+  </main>
+
+  <footer id="site-footer">
+    <p>© 2026 <span>QA Testing Lab</span> — Automation Practice by TND</p>
+  </footer>
+
+  <script>
+    const cities = {
+      africa:   ['Cairo', 'Lagos', 'Nairobi', 'Casablanca', 'Cape Town'],
+      asia:     ['Tokyo', 'Beijing', 'Mumbai', 'Dubai', 'Bangkok'],
+      europe:   ['London', 'Paris', 'Berlin', 'Rome', 'Madrid'],
+      americas: ['New York', 'Toronto', 'São Paulo', 'Buenos Aires', 'Mexico City']
+    };
+
+    function updateCities(continent) {
+      const citySelect = document.getElementById('city-select');
+      citySelect.innerHTML = '<option value="">-- Choose a city --</option>';
+      if (continent && cities[continent]) {
+        citySelect.disabled = false;
+        cities[continent].forEach(c => {
+          const opt = document.createElement('option');
+          opt.value = c.toLowerCase().replace(/\s/g, '-');
+          opt.textContent = c;
+          citySelect.appendChild(opt);
+        });
+      } else {
+        citySelect.disabled = true;
+      }
+      document.getElementById('chained-result').textContent = 'Select a city.';
+      document.getElementById('chained-result').classList.remove('has-result');
+    }
+
+    function showMultiResult() {
+      const sel = document.getElementById('skills-select');
+      const chosen = Array.from(sel.selectedOptions).map(o => o.text);
+      showResult('multi-result', chosen.length ? 'Selected: ' + chosen.join(', ') : 'Nothing selected');
+    }
+
+    function toggleCustomDropdown() {
+      const toggle = document.getElementById('custom-dropdown-toggle');
+      const menu   = document.getElementById('custom-dropdown-menu');
+      const isOpen = menu.classList.contains('open');
+      menu.classList.toggle('open');
+      toggle.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', !isOpen);
+    }
+
+    function selectCustomOption(el) {
+      document.querySelectorAll('.custom-dropdown-option').forEach(o => o.classList.remove('selected'));
+      el.classList.add('selected');
+      document.getElementById('custom-dropdown-value').textContent = el.textContent;
+      toggleCustomDropdown();
+      showResult('custom-result', 'Selected language: ' + el.dataset.value);
+    }
+
+    function showResult(id, msg) {
+      const box = document.getElementById(id);
+      box.textContent = '✅ ' + msg;
+      box.classList.add('has-result');
+    }
+
+    document.addEventListener('click', function(e) {
+      const dd = document.getElementById('custom-lang-dropdown');
+      if (!dd.contains(e.target)) {
+        document.getElementById('custom-dropdown-menu').classList.remove('open');
+        document.getElementById('custom-dropdown-toggle').classList.remove('open');
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QA Testing Lab Automation Practice</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .hidden-element { display: none; }
+    .fade-in { animation: fadeIn 0.4s ease; }
+    @keyframes fadeIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
+
+    .counter-display {
+      font-size: 52px; font-weight: 800; color: var(--primary);
+      text-align: center; padding: 20px; line-height: 1;
+    }
+    .counter-controls { display:flex; gap:10px; justify-content:center; margin-top:10px; }
+
+    .color-box {
+      height: 80px; border-radius: var(--radius);
+      background: var(--primary); transition: background 0.4s;
+      display:flex; align-items:center; justify-content:center;
+      color:#fff; font-weight:600; font-size:14px;
+    }
+
+    .skeleton {
+      background: linear-gradient(90deg, #e2e8f0 25%, #f0f4f8 50%, #e2e8f0 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.2s infinite;
+      border-radius: var(--radius);
+    }
+    @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+    .skeleton-line { height:14px; margin-bottom:10px; }
+    .skeleton-line.short { width:60%; }
+    .skeleton-line.medium { width:80%; }
+
+    .random-text-wrap { min-height: 48px; }
+
+    .toast {
+      position: fixed; bottom: 30px; right: 30px;
+      background: var(--primary); color:#fff;
+      padding: 14px 22px; border-radius: var(--radius);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+      font-size: 14px; font-weight: 500;
+      transform: translateY(80px); opacity:0;
+      transition: transform 0.3s, opacity 0.3s;
+      z-index: 999;
+    }
+    .toast.show { transform: translateY(0); opacity:1; }
+  </style>
+</head>
+<body>
+
+  <header id="site-header">
+    <a class="header-brand" id="brand-logo" href="index.html">
+      <div class="header-logo">QTL</div>
+      <div>
+        <div class="header-title">QA Testing Lab</div>
+        <div class="header-subtitle">Automation Practice</div>
+      </div>
+    </a>
+  </header>
+
+  <nav id="main-nav">
+    <a href="index.html"            class="nav-link"        id="nav-home">Home</a>
+    <a href="form-elements.html"    class="nav-link"        id="nav-forms">Form Elements</a>
+    <a href="dropdowns.html"        class="nav-link"        id="nav-dropdowns">Dropdowns</a>
+    <a href="checkboxes-radio.html" class="nav-link"        id="nav-checkboxes">Checkboxes &amp; Radio</a>
+    <a href="tables.html"           class="nav-link"        id="nav-tables">Tables</a>
+    <a href="alerts.html"           class="nav-link"        id="nav-alerts">Alerts &amp; Popups</a>
+    <a href="dynamic-elements.html" class="nav-link active" id="nav-dynamic">Dynamic Elements</a>
+    <a href="iframe.html"           class="nav-link"        id="nav-iframe">iFrame</a>
+    <a href="file-upload.html"      class="nav-link"        id="nav-upload">File Upload</a>
+    <a href="drag-drop.html"        class="nav-link"        id="nav-dragdrop">Drag &amp; Drop</a>
+  </nav>
+
+  <main id="main-content">
+
+    <div class="page-title">
+      <h1>⚡ Dynamic Elements</h1>
+      <p>Practice explicit waits, visibility checks, and interacting with elements that change over time.</p>
+    </div>
+
+    <!-- ── Show / Hide ────────────────────────────────────── -->
+    <div class="card" id="card-show-hide">
+      <h2>Show / Hide Element <span class="badge">is_displayed() · Explicit Wait</span></h2>
+      <div class="locator-tags">
+        <span class="tag tag-id">id</span>
+        <span class="tag tag-class">class</span>
+        <span class="tag tag-css">CSS Selector</span>
+        <span class="tag tag-xpath">XPath</span>
+      </div>
+
+      <div class="btn-group" style="margin-bottom:16px">
+        <button class="btn btn-primary" id="show-element-btn"  onclick="showHiddenEl(true)">Show Element</button>
+        <button class="btn btn-outline" id="hide-element-btn"  onclick="showHiddenEl(false)">Hide Element</button>
+        <button class="btn btn-accent"  id="toggle-element-btn" onclick="toggleEl()">Toggle Element</button>
+      </div>
+
+      <div id="dynamic-box" name="dynamicBox" class="hidden-element"
+           style="background:#ebf8ff; border:1px solid #90cdf4; border-radius:var(--radius); padding:18px; color:#2c5282; font-size:14px">
+        👋 I was hidden — now I'm visible! Practice <code>element.is_displayed()</code> and
+        <code>WebDriverWait</code> to detect my appearance.
+      </div>
+
+      <div class="hint" style="margin-top:14px">
+        Wait until visible: <code>WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.ID, "dynamic-box")))</code><br>
+        Check: <code>driver.find_element(By.ID, "dynamic-box").is_displayed()</code>
+      </div>
+    </div>
+
+    <!-- ── Delayed Appearance ─────────────────────────────── -->
+    <div class="card" id="card-delayed-element">
+      <h2>Delayed Element Appearance <span class="badge">Explicit Wait · presence_of_element</span></h2>
+      <div class="locator-tags">
+        <span class="tag tag-id">id</span>
+        <span class="tag tag-css">CSS Selector</span>
+        <span class="tag tag-xpath">XPath</span>
+      </div>
+
+      <p style="margin-bottom:14px; font-size:13.5px; color:var(--text-light)">
+        Click the button — the element will appear after a <strong>3-second delay</strong>. Practice explicit waits.
+      </p>
+
+      <button class="btn btn-primary" id="load-delayed-btn" onclick="loadDelayed()">Load Delayed Element</button>
+
+      <div id="delayed-spinner" style="margin-top:14px; display:none">
+        <span class="spinner"></span> Loading, please wait…
+      </div>
+
+      <div id="delayed-element" name="delayedElement" class="hidden-element fade-in"
+           style="margin-top:14px; background:#f0fff4; border:1px solid #9ae6b4; border-radius:var(--radius); padding:18px; color:#276749; font-size:14px">
+        ✅ I appeared after a 3-second delay! My id is <strong>"delayed-element"</strong>.
+      </div>
+
+      <div class="hint" style="margin-top:14px">
+        <code>WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "delayed-element")))</code><br>
+        Also: <code>EC.visibility_of_element_located</code> · <code>EC.element_to_be_clickable</code>
+      </div>
+    </div>
+
+    <!-- ── Progress Bar ───────────────────────────────────── -->
+    <div class="card" id="card-progress">
+      <h2>Loading Progress Bar <span class="badge">CSS · XPath Attribute</span></h2>
+      <div class="locator-tags">
+        <span class="tag tag-id">id</span>
+        <span class="tag tag-css">CSS Selector</span>
+        <span class="tag tag-xpath">XPath</span>
+      </div>
+
+      <button class="btn btn-primary" id="start-progress-btn" onclick="startProgress()">Start Progress</button>
+
+      <div class="progress-bar-wrap" style="margin-top:16px">
+        <div class="progress-bar" id="progress-bar" name="progressBar"
+             role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+      </div>
+      <div id="progress-label" style="margin-top:6px; font-size:13px; color:var(--text-light); text-align:right">0%</div>
+
+      <div id="progress-complete-msg" class="hidden-element" style="margin-top:12px">
+        <div class="alert alert-success show">🎉 Progress complete! The bar reached 100%.</div>
+      </div>
+
+      <div class="hint" style="margin-top:10px">
+        Read progress: <code>driver.find_element(By.ID, "progress-bar").get_attribute("aria-valuenow")</code><br>
+        Wait for completion: <code>WebDriverWait(driver, 15).until(lambda d: d.find_element(By.ID, "progress-bar").get_attribute("aria-valuenow") == "100")</code>
+      </div>
+    </div>
+
+    <!-- ── Counter ────────────────────────────────────────── -->
+    <div class="card" id="card-counter">
+      <h2>Interactive Counter <span class="badge">ID · CSS · XPath text()</span></h2>
+      <div class="locator-tags">
+        <span class="tag tag-id">id</span>
+        <span class="tag tag-css">CSS Selector</span>
+        <span class="tag tag-xpath">XPath</span>
+      </div>
+
+      <div class="counter-display" id="counter-value" name="counterDisplay" data-count="0">0</div>
+      <div class="counter-controls">
+        <button class="btn btn-danger"  id="decrement-btn" name="decrementBtn" onclick="changeCounter(-1)">− Decrement</button>
+        <button class="btn btn-outline" id="reset-counter-btn"                  onclick="changeCounter(0, true)">Reset</button>
+        <button class="btn btn-success" id="increment-btn" name="incrementBtn" onclick="changeCounter(1)">+ Increment</button>
+      </div>
+
+      <div class="hint" style="margin-top:14px">
+        Read value: <code>driver.find_element(By.ID, "counter-value").text</code><br>
+        Or via attribute: <code>driver.find_element(By.ID, "counter-value").get_attribute("data-count")</code><br>
+        XPath text check: <code>By.XPATH → "//div[@id='counter-value' and text()='5']"</code>
+      </div>
+    </div>
+
+    <!-- ── Skeleton Loader ────────────────────────────────── -->
+    <div class="card" id="card-skeleton">
+      <h2>Skeleton Loader → Real Content <span class="badge">Explicit Wait · staleness</span></h2>
+      <div class="locator-tags">
+        <span class="tag tag-id">id</span>
+        <span class="tag tag-css">CSS Selector</span>
+        <span class="tag tag-xpath">XPath</span>
+      </div>
+
+      <p style="margin-bottom:14px; font-size:13.5px; color:var(--text-light)">
+        Simulates a real-world loading pattern. Content loads after 2.5 seconds.
+      </p>
+
+      <button class="btn btn-primary" id="load-content-btn" onclick="loadSkeletonContent()">Simulate Page Load</button>
+
+      <div id="skeleton-wrapper" style="margin-top:16px; display:none">
+        <div class="skeleton skeleton-line medium"></div>
+        <div class="skeleton skeleton-line"></div>
+        <div class="skeleton skeleton-line short"></div>
+      </div>
+
+      <div id="loaded-content" class="hidden-element fade-in" style="margin-top:16px">
+        <div style="background:#fff; border:1px solid var(--border); border-radius:var(--radius); padding:18px">
+          <h3 id="loaded-title" style="color:var(--primary); margin-bottom:8px">🎓 QA Testing Lab — Course Loaded</h3>
+          <p id="loaded-description" style="font-size:14px; color:var(--text-light); line-height:1.6">
+            Selenium WebDriver Masterclass · 42 lessons · 8 hours of content · Updated May 2024
+          </p>
+          <div style="margin-top:12px">
+            <span style="font-size:13px; color:var(--accent); font-weight:600">★★★★★ 4.9</span>
+            <span id="enrolled-count" style="font-size:13px; color:var(--text-light); margin-left:10px">1,247 students enrolled</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hint" style="margin-top:14px">
+        Wait for skeleton to disappear: <code>EC.invisibility_of_element_located((By.ID, "skeleton-wrapper"))</code><br>
+        Then read: <code>driver.find_element(By.ID, "loaded-title").text</code><br>
+        Stale check: <code>EC.staleness_of(element)</code>
+      </div>
+    </div>
+
+    <!-- ── Random / Changing Text ─────────────────────────── -->
+    <div class="card" id="card-random-text">
+      <h2>Dynamic Changing Text <span class="badge">XPath text() · CSS</span></h2>
+      <div class="locator-tags">
+        <span class="tag tag-id">id</span>
+        <span class="tag tag-xpath">XPath</span>
+        <span class="tag tag-css">CSS Selector</span>
+      </div>
+
+      <p style="margin-bottom:14px; font-size:13.5px; color:var(--text-light)">
+        Each click loads a random status message. Practice asserting dynamic text content.
+      </p>
+
+      <button class="btn btn-accent" id="change-text-btn" onclick="changeText()">Generate Random Status</button>
+
+      <div class="random-text-wrap" style="margin-top:14px">
+        <div id="dynamic-text-element" name="dynamicText" class="result-box"
+             style="font-size:15px; font-weight:500; min-height:50px; display:flex; align-items:center">
+          Click the button to generate a status message.
+        </div>
+      </div>
+
+      <div class="hint" style="margin-top:10px">
+        Read text: <code>driver.find_element(By.ID, "dynamic-text-element").text</code><br>
+        XPath by text: <code>By.XPATH → "//div[@id='dynamic-text-element' and contains(text(),'Success')]"</code>
+      </div>
+    </div>
+
+    <!-- ── Toast Notification ─────────────────────────────── -->
+    <div class="card" id="card-toast">
+      <h2>Toast Notification <span class="badge">Explicit Wait · visibility</span></h2>
+      <div class="locator-tags">
+        <span class="tag tag-id">id</span>
+        <span class="tag tag-class">class</span>
+        <span class="tag tag-xpath">XPath</span>
+      </div>
+
+      <p style="margin-bottom:14px; font-size:13.5px; color:var(--text-light)">
+        A toast appears for 3 seconds then disappears. Practice waiting for it to appear and disappear.
+      </p>
+
+      <button class="btn btn-primary" id="trigger-toast-btn" onclick="showToast()">Show Toast Notification</button>
+
+      <div class="hint" style="margin-top:14px">
+        Wait to appear: <code>WebDriverWait(driver, 5).until(EC.visibility_of_element_located((By.ID, "toast-message")))</code><br>
+        Read text: <code>driver.find_element(By.ID, "toast-message").text</code><br>
+        Wait to disappear: <code>WebDriverWait(driver, 5).until(EC.invisibility_of_element_located((By.ID, "toast-message")))</code>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Toast element (fixed position) -->
+  <div class="toast" id="toast-message" name="toastNotification" role="status">
+    🔔 Action completed successfully!
+  </div>
+
+  <footer id="site-footer">
+    <p>© 2026 <span>QA Testing Lab</span> — Automation Practice by TND</p>
+  </footer>
+
+  <script>
+    function showHiddenEl(show) {
+      const el = document.getElementById('dynamic-box');
+      el.style.display = show ? 'block' : 'none';
+      if (show) el.classList.add('fade-in');
+    }
+    function toggleEl() {
+      const el = document.getElementById('dynamic-box');
+      const isHidden = window.getComputedStyle(el).display === 'none';
+      showHiddenEl(isHidden);
+    }
+
+    function loadDelayed() {
+      document.getElementById('load-delayed-btn').disabled = true;
+      document.getElementById('delayed-spinner').style.display = 'block';
+      document.getElementById('delayed-element').style.display = 'none';
+      setTimeout(() => {
+        document.getElementById('delayed-spinner').style.display = 'none';
+        const el = document.getElementById('delayed-element');
+        el.style.display = 'block';
+        el.classList.add('fade-in');
+        document.getElementById('load-delayed-btn').disabled = false;
+      }, 3000);
+    }
+
+    function startProgress() {
+      const bar   = document.getElementById('progress-bar');
+      const label = document.getElementById('progress-label');
+      const msg   = document.getElementById('progress-complete-msg');
+      msg.style.display = 'none';
+      let pct = 0;
+      bar.style.width = '0%';
+      bar.setAttribute('aria-valuenow', 0);
+      document.getElementById('start-progress-btn').disabled = true;
+      const iv = setInterval(() => {
+        pct += Math.floor(Math.random() * 8) + 3;
+        if (pct >= 100) { pct = 100; clearInterval(iv); msg.style.display = 'block'; document.getElementById('start-progress-btn').disabled = false; }
+        bar.style.width = pct + '%';
+        bar.setAttribute('aria-valuenow', pct);
+        label.textContent = pct + '%';
+      }, 300);
+    }
+
+    function changeCounter(delta, reset = false) {
+      const el  = document.getElementById('counter-value');
+      let val   = reset ? 0 : parseInt(el.dataset.count) + delta;
+      el.dataset.count  = val;
+      el.textContent    = val;
+    }
+
+    function loadSkeletonContent() {
+      document.getElementById('load-content-btn').disabled = true;
+      document.getElementById('loaded-content').style.display = 'none';
+      const sk = document.getElementById('skeleton-wrapper');
+      sk.style.display = 'block';
+      setTimeout(() => {
+        sk.style.display = 'none';
+        const c = document.getElementById('loaded-content');
+        c.style.display = 'block';
+        c.classList.add('fade-in');
+        document.getElementById('load-content-btn').disabled = false;
+      }, 2500);
+    }
+
+    const statuses = [
+      '✅ All systems operational',
+      '⚠️ Minor degradation detected on server B',
+      '❌ Critical error — please contact support',
+      '🔄 Deploying new build v2.4.1...',
+      '✅ Build deployed successfully',
+      '📊 Performance within acceptable range',
+      '🔔 Scheduled maintenance in 2 hours',
+    ];
+    function changeText() {
+      const el  = document.getElementById('dynamic-text-element');
+      const msg = statuses[Math.floor(Math.random() * statuses.length)];
+      el.textContent = msg;
+      el.classList.add('has-result');
+    }
+
+    function showToast() {
+      const t = document.getElementById('toast-message');
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 3000);
+    }
+  </script>
+</body>
+</html>

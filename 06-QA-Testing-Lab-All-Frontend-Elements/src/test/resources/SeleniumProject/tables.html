@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QA Testing Lab Automation Practice</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .search-bar { display:flex; gap:10px; margin-bottom:16px; }
+    .search-bar input { flex:1; }
+    td .status-badge {
+      padding: 3px 10px; border-radius: 20px; font-size: 12px; font-weight: 600;
+    }
+    .status-active   { background:#f0fff4; color:#276749; border:1px solid #9ae6b4; }
+    .status-inactive { background:#fff5f5; color:#9b2c2c; border:1px solid #feb2b2; }
+    .status-pending  { background:#fffaf0; color:#c05621; border:1px solid #fbd38d; }
+    th.sortable { cursor:pointer; user-select:none; }
+    th.sortable:hover { background: #2d5986; }
+    th.sort-asc::after  { content: ' ▲'; font-size:11px; }
+    th.sort-desc::after { content: ' ▼'; font-size:11px; }
+  </style>
+</head>
+<body>
+
+  <header id="site-header">
+    <a class="header-brand" id="brand-logo" href="index.html">
+      <div class="header-logo">QTL</div>
+      <div>
+        <div class="header-title">QA Testing Lab</div>
+        <div class="header-subtitle">Automation Practice</div>
+      </div>
+    </a>
+  </header>
+
+  <nav id="main-nav">
+    <a href="index.html"            class="nav-link"        id="nav-home">Home</a>
+    <a href="form-elements.html"    class="nav-link"        id="nav-forms">Form Elements</a>
+    <a href="dropdowns.html"        class="nav-link"        id="nav-dropdowns">Dropdowns</a>
+    <a href="checkboxes-radio.html" class="nav-link"        id="nav-checkboxes">Checkboxes &amp; Radio</a>
+    <a href="tables.html"           class="nav-link active" id="nav-tables">Tables</a>
+    <a href="alerts.html"           class="nav-link"        id="nav-alerts">Alerts &amp; Popups</a>
+    <a href="dynamic-elements.html" class="nav-link"        id="nav-dynamic">Dynamic Elements</a>
+    <a href="iframe.html"           class="nav-link"        id="nav-iframe">iFrame</a>
+    <a href="file-upload.html"      class="nav-link"        id="nav-upload">File Upload</a>
+    <a href="drag-drop.html"        class="nav-link"        id="nav-dragdrop">Drag &amp; Drop</a>
+  </nav>
+
+  <main id="main-content">
+
+    <div class="page-title">
+      <h1>📊 Tables</h1>
+      <p>Practice navigating table rows, cells, headers, and filtering table data.</p>
+    </div>
+
+    <!-- ── Static Table ───────────────────────────────────── -->
+    <div class="card" id="card-static-table">
+      <h2>Static Data Table <span class="badge">Tag · XPath · CSS nth-child</span></h2>
+      <div class="locator-tags">
+        <span class="tag tag-tag">Tag Name</span>
+        <span class="tag tag-css">CSS Selector</span>
+        <span class="tag tag-xpath">XPath</span>
+        <span class="tag tag-id">id</span>
+      </div>
+
+      <div class="table-wrapper">
+        <table id="static-table" class="data-table">
+          <thead id="static-table-head">
+            <tr id="static-table-header-row" class="header-row">
+              <th id="th-id"         class="col-header">#</th>
+              <th id="th-name"       class="col-header">Full Name</th>
+              <th id="th-email"      class="col-header">Email</th>
+              <th id="th-role"       class="col-header">Role</th>
+              <th id="th-department" class="col-header">Department</th>
+              <th id="th-salary"     class="col-header">Salary</th>
+            </tr>
+          </thead>
+          <tbody id="static-table-body">
+            <tr id="row-1" class="data-row">
+              <td class="cell-id">1</td>
+              <td class="cell-name">Alice Johnson</td>
+              <td class="cell-email">alice@QAtestinglab.com</td>
+              <td class="cell-role">QA Lead</td>
+              <td class="cell-dept">Engineering</td>
+              <td class="cell-salary">$95,000</td>
+            </tr>
+            <tr id="row-2" class="data-row">
+              <td class="cell-id">2</td>
+              <td class="cell-name">Bob Martinez</td>
+              <td class="cell-email">bob@QAtestinglab.com</td>
+              <td class="cell-role">Developer</td>
+              <td class="cell-dept">Engineering</td>
+              <td class="cell-salary">$88,000</td>
+            </tr>
+            <tr id="row-3" class="data-row">
+              <td class="cell-id">3</td>
+              <td class="cell-name">Carol White</td>
+              <td class="cell-email">carol@QAtestinglab.com</td>
+              <td class="cell-role">Scrum Master</td>
+              <td class="cell-dept">Management</td>
+              <td class="cell-salary">$105,000</td>
+            </tr>
+            <tr id="row-4" class="data-row">
+              <td class="cell-id">4</td>
+              <td class="cell-name">David Chen</td>
+              <td class="cell-email">david@QAtestinglab.com</td>
+              <td class="cell-role">DevOps</td>
+              <td class="cell-dept">Infrastructure</td>
+              <td class="cell-salary">$98,000</td>
+            </tr>
+            <tr id="row-5" class="data-row">
+              <td class="cell-id">5</td>
+              <td class="cell-name">Eva Rossi</td>
+              <td class="cell-email">eva@QAtestinglab.com</td>
+              <td class="cell-role">Automation Engineer</td>
+              <td class="cell-dept">Engineering</td>
+              <td class="cell-salary">$92,000</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="hint" style="margin-top:14px">
+        Locators: <code>By.ID → "static-table"</code> ·
+        <code>By.TAG_NAME → "table"</code> ·
+        <code>By.XPATH → "//table[@id='static-table']//tr[2]/td[2]"</code> (Row 2, Col 2) ·
+        <code>By.CSS_SELECTOR → "#static-table tbody tr:nth-child(3) td:nth-child(4)"</code> (Row 3, Col 4) ·
+        <code>By.XPATH → "//td[text()='Alice Johnson']"</code>
+      </div>
+    </div>
+
+    <!-- ── Searchable Table ───────────────────────────────── -->
+    <div class="card" id="card-searchable-table">
+      <h2>Searchable &amp; Sortable Table <span class="badge">Dynamic DOM · XPath</span></h2>
+      <div class="locator-tags">
+        <span class="tag tag-id">id</span>
+        <span class="tag tag-css">CSS Selector</span>
+        <span class="tag tag-xpath">XPath</span>
+        <span class="tag tag-tag">Tag Name</span>
+      </div>
+
+      <div class="search-bar">
+        <input type="search" id="table-search-input" name="tableSearch"
+               class="table-search-field"
+               placeholder="Search by name, city, or status..."
+               oninput="filterTable()" />
+        <button class="btn btn-primary btn-sm" id="clear-search-btn" onclick="clearSearch()">Clear</button>
+      </div>
+
+      <div class="table-wrapper">
+        <table id="searchable-table" class="data-table sortable-table">
+          <thead id="searchable-table-head">
+            <tr class="header-row">
+              <th id="sort-id"     class="col-header sortable" data-col="0" onclick="sortTable(0)">#</th>
+              <th id="sort-name"   class="col-header sortable" data-col="1" onclick="sortTable(1)">Student Name</th>
+              <th id="sort-course" class="col-header sortable" data-col="2" onclick="sortTable(2)">Course</th>
+              <th id="sort-score"  class="col-header sortable" data-col="3" onclick="sortTable(3)">Score</th>
+              <th id="sort-city"   class="col-header sortable" data-col="4" onclick="sortTable(4)">City</th>
+              <th id="sort-status" class="col-header sortable" data-col="5" onclick="sortTable(5)">Status</th>
+              <th id="th-action"   class="col-header">Action</th>
+            </tr>
+          </thead>
+          <tbody id="searchable-table-body">
+            <tr class="student-row" id="student-row-1">
+              <td class="cell-id">1</td>
+              <td class="cell-name student-name">Omar Khalid</td>
+              <td class="cell-course">Selenium Advanced</td>
+              <td class="cell-score">92</td>
+              <td class="cell-city">Cairo</td>
+              <td class="cell-status"><span class="status-badge status-active">Active</span></td>
+              <td><button class="btn btn-sm btn-primary action-btn" id="edit-btn-1" data-id="1" onclick="rowAction(1,'edit')">Edit</button></td>
+            </tr>
+            <tr class="student-row" id="student-row-2">
+              <td class="cell-id">2</td>
+              <td class="cell-name student-name">Sara Ahmed</td>
+              <td class="cell-course">Python Basics</td>
+              <td class="cell-score">78</td>
+              <td class="cell-city">Dubai</td>
+              <td class="cell-status"><span class="status-badge status-pending">Pending</span></td>
+              <td><button class="btn btn-sm btn-accent action-btn" id="edit-btn-2" data-id="2" onclick="rowAction(2,'edit')">Edit</button></td>
+            </tr>
+            <tr class="student-row" id="student-row-3">
+              <td class="cell-id">3</td>
+              <td class="cell-name student-name">Mohamed Ali</td>
+              <td class="cell-course">Selenium Advanced</td>
+              <td class="cell-score">85</td>
+              <td class="cell-city">Riyadh</td>
+              <td class="cell-status"><span class="status-badge status-active">Active</span></td>
+              <td><button class="btn btn-sm btn-primary action-btn" id="edit-btn-3" data-id="3" onclick="rowAction(3,'edit')">Edit</button></td>
+            </tr>
+            <tr class="student-row" id="student-row-4">
+              <td class="cell-id">4</td>
+              <td class="cell-name student-name">Lina Nasser</td>
+              <td class="cell-course">API Testing</td>
+              <td class="cell-score">61</td>
+              <td class="cell-city">Amman</td>
+              <td class="cell-status"><span class="status-badge status-inactive">Inactive</span></td>
+              <td><button class="btn btn-sm btn-danger action-btn" id="edit-btn-4" data-id="4" onclick="rowAction(4,'edit')">Edit</button></td>
+            </tr>
+            <tr class="student-row" id="student-row-5">
+              <td class="cell-id">5</td>
+              <td class="cell-name student-name">Youssef Tarek</td>
+              <td class="cell-course">Python Basics</td>
+              <td class="cell-score">95</td>
+              <td class="cell-city">Cairo</td>
+              <td class="cell-status"><span class="status-badge status-active">Active</span></td>
+              <td><button class="btn btn-sm btn-primary action-btn" id="edit-btn-5" data-id="5" onclick="rowAction(5,'edit')">Edit</button></td>
+            </tr>
+            <tr class="student-row" id="student-row-6">
+              <td class="cell-id">6</td>
+              <td class="cell-name student-name">Hana Ibrahim</td>
+              <td class="cell-course">API Testing</td>
+              <td class="cell-score">74</td>
+              <td class="cell-city">Beirut</td>
+              <td class="cell-status"><span class="status-badge status-pending">Pending</span></td>
+              <td><button class="btn btn-sm btn-accent action-btn" id="edit-btn-6" data-id="6" onclick="rowAction(6,'edit')">Edit</button></td>
+            </tr>
+            <tr class="student-row" id="student-row-7">
+              <td class="cell-id">7</td>
+              <td class="cell-name student-name">Khaled Samir</td>
+              <td class="cell-course">Selenium Advanced</td>
+              <td class="cell-score">88</td>
+              <td class="cell-city">Dubai</td>
+              <td class="cell-status"><span class="status-badge status-active">Active</span></td>
+              <td><button class="btn btn-sm btn-primary action-btn" id="edit-btn-7" data-id="7" onclick="rowAction(7,'edit')">Edit</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="result-box" id="table-action-result" style="margin-top:14px">Click an Edit button or sort a column.</div>
+
+      <div class="hint" style="margin-top:10px">
+        Search: <code>By.ID → "table-search-input"</code><br>
+        Row count: <code>driver.find_elements(By.CSS_SELECTOR, "#searchable-table tbody tr")</code><br>
+        Cell by row/col: <code>By.XPATH → "//tr[@id='student-row-3']/td[2]"</code><br>
+        Find row by content: <code>By.XPATH → "//td[text()='Sara Ahmed']/../td[4]"</code> (gets her score)
+      </div>
+    </div>
+
+    <!-- ── Table with Colspan/Rowspan ────────────────────── -->
+    <div class="card" id="card-complex-table">
+      <h2>Complex Table (colspan &amp; rowspan) <span class="badge">XPath Axes</span></h2>
+      <div class="locator-tags">
+        <span class="tag tag-xpath">XPath</span>
+        <span class="tag tag-css">CSS Selector</span>
+        <span class="tag tag-tag">Tag Name</span>
+      </div>
+
+      <div class="table-wrapper">
+        <table id="complex-table" class="data-table">
+          <thead>
+            <tr class="header-row" id="complex-header-row-1">
+              <th id="th-quarter"  rowspan="2" class="col-header">Quarter</th>
+              <th id="th-eng"      colspan="2" class="col-header" style="text-align:center">Engineering</th>
+              <th id="th-qa"       colspan="2" class="col-header" style="text-align:center">QA</th>
+              <th id="th-total"    rowspan="2" class="col-header">Total</th>
+            </tr>
+            <tr class="header-row" id="complex-header-row-2">
+              <th id="th-eng-pass" class="col-header">Pass</th>
+              <th id="th-eng-fail" class="col-header">Fail</th>
+              <th id="th-qa-pass"  class="col-header">Pass</th>
+              <th id="th-qa-fail"  class="col-header">Fail</th>
+            </tr>
+          </thead>
+          <tbody id="complex-table-body">
+            <tr class="data-row" id="complex-row-q1">
+              <td class="cell-quarter">Q1</td>
+              <td class="cell-eng-pass">45</td>
+              <td class="cell-eng-fail">5</td>
+              <td class="cell-qa-pass">38</td>
+              <td class="cell-qa-fail">12</td>
+              <td class="cell-total"><strong>100</strong></td>
+            </tr>
+            <tr class="data-row" id="complex-row-q2">
+              <td class="cell-quarter">Q2</td>
+              <td class="cell-eng-pass">50</td>
+              <td class="cell-eng-fail">3</td>
+              <td class="cell-qa-pass">42</td>
+              <td class="cell-qa-fail">8</td>
+              <td class="cell-total"><strong>103</strong></td>
+            </tr>
+            <tr class="data-row" id="complex-row-q3">
+              <td class="cell-quarter">Q3</td>
+              <td class="cell-eng-pass">48</td>
+              <td class="cell-eng-fail">7</td>
+              <td class="cell-qa-pass">40</td>
+              <td class="cell-qa-fail">10</td>
+              <td class="cell-total"><strong>105</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="hint" style="margin-top:14px">
+        Challenge: <code>By.XPATH → "//tr[@id='complex-row-q2']/td[3]"</code> (Q2 Engineering Fail) ·
+        <code>By.XPATH → "//td[@class='cell-quarter' and text()='Q3']/following-sibling::td[last()]"</code> (Q3 Total)
+      </div>
+    </div>
+
+  </main>
+
+  <footer id="site-footer">
+    <p>© 2026 <span>QA Testing Lab</span> — Automation Practice by TND</p>
+  </footer>
+
+  <script>
+    function filterTable() {
+      const q = document.getElementById('table-search-input').value.toLowerCase();
+      document.querySelectorAll('#searchable-table-body .student-row').forEach(row => {
+        row.style.display = row.textContent.toLowerCase().includes(q) ? '' : 'none';
+      });
+    }
+
+    function clearSearch() {
+      document.getElementById('table-search-input').value = '';
+      filterTable();
+    }
+
+    let sortDir = {};
+    function sortTable(col) {
+      const tbody = document.getElementById('searchable-table-body');
+      const rows  = Array.from(tbody.querySelectorAll('tr'));
+      sortDir[col] = !sortDir[col];
+      rows.sort((a, b) => {
+        const va = a.cells[col].textContent.trim();
+        const vb = b.cells[col].textContent.trim();
+        const na = parseFloat(va), nb = parseFloat(vb);
+        const cmp = isNaN(na) ? va.localeCompare(vb) : na - nb;
+        return sortDir[col] ? cmp : -cmp;
+      });
+      rows.forEach(r => tbody.appendChild(r));
+      document.querySelectorAll('th.sortable').forEach(th => th.classList.remove('sort-asc','sort-desc'));
+      const th = document.querySelector(`th[data-col="${col}"]`);
+      th.classList.add(sortDir[col] ? 'sort-asc' : 'sort-desc');
+    }
+
+    function rowAction(id, action) {
+      const name = document.querySelector(`#student-row-${id} .cell-name`).textContent;
+      const box  = document.getElementById('table-action-result');
+      box.textContent = `✅ Action "${action}" triggered on row ${id}: ${name}`;
+      box.classList.add('has-result');
+    }
+  </script>
+</body>
+</html>

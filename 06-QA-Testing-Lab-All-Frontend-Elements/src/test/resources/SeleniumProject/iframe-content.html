@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>iFrame Content — QA Testing Lab</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f7fafc; color: #2d3748; padding: 24px;
+    }
+    h2 { font-size: 17px; color: #1e3a5f; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 2px solid #e2e8f0; }
+    .form-group { margin-bottom: 14px; }
+    label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 5px; }
+    input[type="text"], input[type="email"] {
+      width: 100%; padding: 9px 12px; border: 1.5px solid #e2e8f0;
+      border-radius: 6px; font-size: 13px; font-family: inherit;
+      outline: none; transition: border-color 0.2s;
+    }
+    input:focus { border-color: #1e3a5f; }
+    .btn {
+      padding: 9px 20px; background: #1e3a5f; color: #fff;
+      border: none; border-radius: 6px; font-size: 13px;
+      font-weight: 600; cursor: pointer; font-family: inherit;
+      transition: background 0.2s;
+    }
+    .btn:hover { background: #142847; }
+    .result {
+      margin-top: 12px; padding: 10px 14px; background: #ebf8ff;
+      border: 1px solid #90cdf4; border-radius: 6px;
+      font-size: 13px; color: #2c5282; display: none;
+    }
+    .iframe-label {
+      display: inline-block; background: #f5a623; color: #1e3a5f;
+      font-size: 11px; font-weight: 700; padding: 3px 10px;
+      border-radius: 20px; margin-bottom: 14px; letter-spacing: 0.3px;
+    }
+    a#iframe-link { color: #1e3a5f; font-size: 13px; font-weight: 600; }
+    p.info { font-size: 12.5px; color: #718096; line-height: 1.5; margin-bottom: 14px; }
+  </style>
+</head>
+<body>
+
+  <span class="iframe-label">📦 You are inside an iFrame</span>
+
+  <h2>iFrame Login Form</h2>
+  <p class="info">
+    This content is embedded inside an <code>&lt;iframe&gt;</code>.
+    To interact with these elements in Selenium, you must first switch into the frame.
+  </p>
+
+  <div class="form-group">
+    <label for="iframe-username">Username</label>
+    <input type="text"  id="iframe-username" name="iframeUser"
+           class="iframe-input username-field" placeholder="Enter username" autocomplete="off" />
+  </div>
+
+  <div class="form-group">
+    <label for="iframe-password">Password</label>
+    <input type="text"  id="iframe-password" name="iframePass"
+           class="iframe-input password-field" placeholder="Enter password" autocomplete="off" />
+  </div>
+
+  <div class="form-group">
+    <label for="iframe-email">Email</label>
+    <input type="email" id="iframe-email" name="iframeEmail"
+           class="iframe-input email-field" placeholder="you@example.com" autocomplete="off" />
+  </div>
+
+  <button class="btn" id="iframe-submit-btn" name="iframeSubmit"
+          onclick="submitIframe()">Submit Inside Frame</button>
+
+  <div class="result" id="iframe-result" name="iframeResult">
+    ✅ Form submitted from inside the iFrame!
+  </div>
+
+  <hr style="margin:20px 0; border-color:#e2e8f0" />
+
+  <p class="info">Link inside the iFrame (practice <code>By.LINK_TEXT</code> after switching frame):</p>
+  <a href="#" id="iframe-link" class="iframe-anchor-link"
+     onclick="event.preventDefault(); document.getElementById('iframe-result').style.display='block'; document.getElementById('iframe-result').textContent='✅ Link inside iFrame was clicked!'">
+    Visit QA Testing Lab Website
+  </a>
+
+  <script>
+    function submitIframe() {
+      const r = document.getElementById('iframe-result');
+      const u = document.getElementById('iframe-username').value;
+      r.style.display = 'block';
+      r.textContent   = u ? `✅ Submitted! Username: "${u}"` : '✅ Form submitted from inside the iFrame!';
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QA Testing Lab Automation Practice</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <header id="site-header">
+    <a class="header-brand" id="brand-logo" href="index.html">
+      <div class="header-logo">QTL</div>
+      <div>
+        <div class="header-title">QA Testing Lab</div>
+        <div class="header-subtitle">Automation Practice</div>
+      </div>
+    </a>
+  </header>
+
+  <nav id="main-nav">
+    <a href="index.html"            class="nav-link"        id="nav-home">Home</a>
+    <a href="form-elements.html"    class="nav-link active" id="nav-forms">Form Elements</a>
+    <a href="dropdowns.html"        class="nav-link"        id="nav-dropdowns">Dropdowns</a>
+    <a href="checkboxes-radio.html" class="nav-link"        id="nav-checkboxes">Checkboxes &amp; Radio</a>
+    <a href="tables.html"           class="nav-link"        id="nav-tables">Tables</a>
+    <a href="alerts.html"           class="nav-link"        id="nav-alerts">Alerts &amp; Popups</a>
+    <a href="dynamic-elements.html" class="nav-link"        id="nav-dynamic">Dynamic Elements</a>
+    <a href="iframe.html"           class="nav-link"        id="nav-iframe">iFrame</a>
+    <a href="file-upload.html"      class="nav-link"        id="nav-upload">File Upload</a>
+    <a href="drag-drop.html"        class="nav-link"        id="nav-dragdrop">Drag &amp; Drop</a>
+  </nav>
+
+  <main id="main-content">
+
+    <div class="page-title">
+      <h1>📝 Form Elements</h1>
+      <p>Practice locating and interacting with all common HTML form controls.</p>
+    </div>
+
+    <!-- ── Text Inputs ─────────────────────────────────────── -->
+    <div class="card" id="card-text-inputs">
+      <h2>Text Inputs <span class="badge">ID · Name · CSS · XPath</span></h2>
+      <div class="locator-tags">
+        <span class="tag tag-id">id</span>
+        <span class="tag tag-name">name</span>
+        <span class="tag tag-css">CSS Selector</span>
+        <span class="tag tag-xpath">XPath</span>
+        <span class="tag tag-tag">Tag Name</span>
+      </div>
+
+      <form id="registration-form" name="registrationForm" novalidate>
+
+        <div class="form-group">
+          <label for="first-name">First Name</label>
+          <input
+            type="text"
+            id="first-name"
+            name="firstName"
+            class="text-input required-field"
+            placeholder="Enter your first name"
+            autocomplete="off" />
+          <div class="hint">Locators: <code>By.ID → "first-name"</code> · <code>By.NAME → "firstName"</code></div>
+        </div>
+
+        <div class="form-group">
+          <label for="last-name">Last Name</label>
+          <input
+            type="text"
+            id="last-name"
+            name="lastName"
+            class="text-input required-field"
+            placeholder="Enter your last name"
+            autocomplete="off" />
+          <div class="hint">Locators: <code>By.ID → "last-name"</code> · <code>By.NAME → "lastName"</code></div>
+        </div>
+
+        <div class="form-group">
+          <label for="email-address">Email Address</label>
+          <input
+            type="email"
+            id="email-address"
+            name="email"
+            class="email-input required-field"
+            placeholder="you@example.com"
+            autocomplete="off" />
+          <div class="hint">Locators: <code>By.CSS_SELECTOR → "input[type='email']"</code></div>
+        </div>
+
+        <div class="form-group">
+          <label for="phone-number">Phone Number</label>
+          <input
+            type="tel"
+            id="phone-number"
+            name="phone"
+            class="tel-input"
+            placeholder="+1 (555) 000-0000"
+            autocomplete="off" />
+          <div class="hint">Locators: <code>By.XPATH → "//input[@name='phone']"</code></div>
+        </div>
+
+        <div class="form-group">
+          <label for="age">Age</label>
+          <input
+            type="number"
+            id="age"
+            name="age"
+            class="number-input"
+            placeholder="25"
+            min="1"
+            max="120" />
+          <div class="hint">Locators: <code>By.CSS_SELECTOR → "input[type='number']"</code></div>
+        </div>
+
+        <div class="form-group">
+          <label for="website-url">Website URL</label>
+          <input
+            type="url"
+            id="website-url"
+            name="website"
+            class="url-input"
+            placeholder="https://example.com" />
+          <div class="hint">Locators: <code>By.XPATH → "//input[@id='website-url']"</code></div>
+        </div>
+
+        <div class="form-group">
+          <label for="birth-date">Date of Birth</label>
+          <input
+            type="date"
+            id="birth-date"
+            name="birthDate"
+            class="date-input" />
+          <div class="hint">Locators: <code>By.ID → "birth-date"</code> · <code>By.CSS_SELECTOR → "input[type='date']"</code></div>
+        </div>
+
+        <div class="form-group">
+          <label for="search-box">Search Box</label>
+          <input
+            type="search"
+            id="search-box"
+            name="searchQuery"
+            class="search-input"
+            placeholder="Search anything..." />
+          <div class="hint">Locators: <code>By.NAME → "searchQuery"</code></div>
+        </div>
+
+      </form>
+    </div>
+
+    <!-- ── Password & Readonly ─────────────────────────────── -->
+    <div class="card" id="card-special-inputs">
+      <h2>Special Inputs <span class="badge">CSS · XPath Attribute</span></h2>
+      <div class="locator-tags">
+        <span class="tag tag-css">CSS Selector</span>
+        <span class="tag tag-xpath">XPath</span>
+        <span class="tag tag-id">id</span>
+      </div>
+
+      <div class="form-group">
+        <label for="password-field">Password</label>
+        <input
+          type="password"
+          id="password-field"
+          name="password"
+          class="password-input"
+          placeholder="Enter password" />
+        <div class="hint">Locators: <code>By.CSS_SELECTOR → "input[type='password']"</code></div>
+      </div>
+
+      <div class="form-group">
+        <label for="confirm-password">Confirm Password</label>
+        <input
+          type="password"
+          id="confirm-password"
+          name="confirmPassword"
+          class="password-input"
+          placeholder="Repeat password" />
+        <div class="hint">Locators: <code>By.XPATH → "(//input[@type='password'])[2]"</code></div>
+      </div>
+
+      <div class="form-group">
+        <label for="readonly-field">Read-Only Field</label>
+        <input
+          type="text"
+          id="readonly-field"
+          name="readonlyField"
+          class="readonly-input"
+          value="This field is read-only"
+          readonly />
+        <div class="hint">Locators: <code>By.CSS_SELECTOR → "input[readonly]"</code> · <code>By.XPATH → "//input[@readonly]"</code></div>
+      </div>
+
+      <div class="form-group">
+        <label for="disabled-field">Disabled Field</label>
+        <input
+          type="text"
+          id="disabled-field"
+          name="disabledField"
+          class="disabled-input"
+          value="This field is disabled"
+          disabled />
+        <div class="hint">Locators: <code>By.CSS_SELECTOR → "input[disabled]"</code> · <code>By.XPATH → "//input[@disabled]"</code></div>
+      </div>
+
+    </div>
+
+    <!-- ── Textarea ────────────────────────────────────────── -->
+    <div class="card" id="card-textarea">
+      <h2>Textarea <span class="badge">ID · Name · Tag</span></h2>
+      <div class="locator-tags">
+        <span class="tag tag-id">id</span>
+        <span class="tag tag-name">name</span>
+        <span class="tag tag-tag">Tag Name</span>
+        <span class="tag tag-xpath">XPath</span>
+      </div>
+
+      <div class="form-group">
+        <label for="bio">Biography / Notes</label>
+        <textarea
+          id="bio"
+          name="biography"
+          class="bio-textarea"
+          placeholder="Write something about yourself..."></textarea>
+        <div class="hint">
+          Locators: <code>By.ID → "bio"</code> · <code>By.NAME → "biography"</code> ·
+          <code>By.TAG_NAME → "textarea"</code> · <code>By.XPATH → "//textarea[@id='bio']"</code>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="comments">Comments</label>
+        <textarea
+          id="comments"
+          name="comments"
+          class="comments-textarea"
+          rows="4"
+          placeholder="Leave your comments here..."></textarea>
+        <div class="hint">Locators: <code>By.XPATH → "(//textarea)[2]"</code> · <code>By.CSS_SELECTOR → "textarea#comments"</code></div>
+      </div>
+
+    </div>
+
+    <!-- ── Buttons ─────────────────────────────────────────── -->
+    <div class="card" id="card-buttons">
+      <h2>Buttons <span class="badge">ID · Class · XPath · CSS</span></h2>
+      <div class="locator-tags">
+        <span class="tag tag-id">id</span>
+        <span class="tag tag-class">class</span>
+        <span class="tag tag-css">CSS Selector</span>
+        <span class="tag tag-xpath">XPath</span>
+        <span class="tag tag-tag">Tag Name</span>
+      </div>
+
+      <div class="btn-group">
+        <button
+          type="submit"
+          id="submit-btn"
+          name="submitButton"
+          class="btn btn-primary submit-button"
+          onclick="showResult('submit-result', 'Submit button clicked!')">
+          Submit Form
+        </button>
+
+        <button
+          type="reset"
+          id="reset-btn"
+          name="resetButton"
+          class="btn btn-outline reset-button"
+          onclick="showResult('submit-result', 'Reset button clicked!')">
+          Reset Form
+        </button>
+
+        <button
+          type="button"
+          id="success-btn"
+          class="btn btn-success action-button"
+          onclick="showResult('submit-result', 'Success button clicked!')">
+          Success Action
+        </button>
+
+        <button
+          type="button"
+          id="danger-btn"
+          class="btn btn-danger action-button"
+          onclick="showResult('submit-result', 'Danger button clicked!')">
+          Danger Action
+        </button>
+
+        <button
+          type="button"
+          id="disabled-btn"
+          class="btn btn-primary"
+          disabled>
+          Disabled Button
+        </button>
+
+        <button
+          type="button"
+          id="small-btn"
+          class="btn btn-accent btn-sm action-button"
+          onclick="showResult('submit-result', 'Small button clicked!')">
+          Small Button
+        </button>
+
+        <button
+          type="button"
+          id="large-btn"
+          class="btn btn-primary btn-lg action-button"
+          onclick="showResult('submit-result', 'Large button clicked!')">
+          Large Button
+        </button>
+      </div>
+
+      <div class="result-box" id="submit-result">Click any button above to see the result here.</div>
+      <div class="hint" style="margin-top:10px">
+        Locators: <code>By.ID → "submit-btn"</code> · <code>By.CLASS_NAME → "submit-button"</code> ·
+        <code>By.XPATH → "//button[@type='submit']"</code> · <code>By.CSS_SELECTOR → "button.btn-primary"</code>
+      </div>
+    </div>
+
+    <!-- ── Links ──────────────────────────────────────────── -->
+    <div class="card" id="card-links">
+      <h2>Links <span class="badge">Link Text · Partial Link Text</span></h2>
+      <div class="locator-tags">
+        <span class="tag tag-link">Link Text</span>
+        <span class="tag tag-link">Partial Link Text</span>
+        <span class="tag tag-id">id</span>
+        <span class="tag tag-css">CSS Selector</span>
+      </div>
+
+      <p style="margin-bottom:14px; color:var(--text-light); font-size:14px">
+        Use these links to practice <strong>Link Text</strong> and <strong>Partial Link Text</strong> locators.
+      </p>
+
+      <ul style="list-style:none; display:flex; flex-direction:column; gap:10px;">
+        <li>
+          <a href="form-elements.html" id="link-form-elements" class="practice-link nav-practice-link">Form Elements Practice Page</a>
+          <span class="hint"> → <code>By.LINK_TEXT → "Form Elements Practice Page"</code></span>
+        </li>
+        <li>
+          <a href="tables.html" id="link-tables" class="practice-link nav-practice-link">View Data Tables and Reports</a>
+          <span class="hint"> → <code>By.PARTIAL_LINK_TEXT → "Data Tables"</code></span>
+        </li>
+        <li>
+          <a href="alerts.html" id="link-alerts" class="practice-link nav-practice-link">JavaScript Alerts and Popup Dialogs</a>
+          <span class="hint"> → <code>By.PARTIAL_LINK_TEXT → "Alerts"</code></span>
+        </li>
+        <li>
+          <a href="dynamic-elements.html" id="link-dynamic" class="practice-link nav-practice-link">Dynamic and Asynchronous Elements</a>
+          <span class="hint"> → <code>By.PARTIAL_LINK_TEXT → "Asynchronous"</code></span>
+        </li>
+        <li>
+          <a href="drag-drop.html" id="link-dragdrop" class="practice-link nav-practice-link">Drag and Drop Interaction Zone</a>
+          <span class="hint"> → <code>By.LINK_TEXT → "Drag and Drop Interaction Zone"</code></span>
+        </li>
+      </ul>
+    </div>
+
+  </main>
+
+  <footer id="site-footer">
+    <p>© 2026 <span>QA Testing Lab</span> — Automation Practice by TND</p>
+  </footer>
+
+  <script>
+    function showResult(boxId, message) {
+      const box = document.getElementById(boxId);
+      box.textContent = '✅ ' + message;
+      box.classList.add('has-result');
+    }
+  </script>
+</body>
+</html>

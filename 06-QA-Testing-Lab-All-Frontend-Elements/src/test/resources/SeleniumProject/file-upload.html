@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QA Testing Lab Automation Practice</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .upload-zone {
+      border: 2px dashed var(--border); border-radius: var(--radius);
+      padding: 40px 20px; text-align: center; cursor: pointer;
+      transition: border-color 0.2s, background 0.2s; background: #f7fafc;
+    }
+    .upload-zone:hover, .upload-zone.dragover {
+      border-color: var(--accent); background: #fffbf0;
+    }
+    .upload-zone .upload-icon { font-size: 40px; margin-bottom: 10px; }
+    .upload-zone p { font-size: 14px; color: var(--text-light); margin-bottom: 6px; }
+    .upload-zone .browse-link { color: var(--primary); font-weight: 600; text-decoration: underline; cursor: pointer; }
+
+    .file-list { list-style: none; margin-top: 14px; display: flex; flex-direction: column; gap: 8px; }
+    .file-item {
+      display: flex; align-items: center; gap: 12px;
+      background: #f7fafc; border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 10px 14px; font-size: 13.5px;
+    }
+    .file-item .file-icon { font-size: 20px; }
+    .file-item .file-name { flex: 1; font-weight: 500; }
+    .file-item .file-size { color: var(--text-light); font-size: 12px; }
+    .file-item .file-remove {
+      background: none; border: none; color: var(--danger);
+      cursor: pointer; font-size: 16px; padding: 0 4px; line-height: 1;
+    }
+
+    .hidden-file-input { display: none; }
+
+    .progress-wrap { background: var(--border); border-radius: 99px; height: 8px; overflow: hidden; margin-top: 6px; }
+    .progress-fill { height: 100%; background: linear-gradient(90deg, var(--primary), var(--accent)); border-radius: 99px; width: 0; transition: width 0.3s; }
+  </style>
+</head>
+<body>
+
+  <header id="site-header">
+    <a class="header-brand" id="brand-logo" href="index.html">
+      <div class="header-logo">QTL</div>
+      <div>
+        <div class="header-title">QA Testing Lab</div>
+        <div class="header-subtitle">Automation Practice</div>
+      </div>
+    </a>
+  </header>
+
+  <nav id="main-nav">
+    <a href="index.html"            class="nav-link"        id="nav-home">Home</a>
+    <a href="form-elements.html"    class="nav-link"        id="nav-forms">Form Elements</a>
+    <a href="dropdowns.html"        class="nav-link"        id="nav-dropdowns">Dropdowns</a>
+    <a href="checkboxes-radio.html" class="nav-link"        id="nav-checkboxes">Checkboxes &amp; Radio</a>
+    <a href="tables.html"           class="nav-link"        id="nav-tables">Tables</a>
+    <a href="alerts.html"           class="nav-link"        id="nav-alerts">Alerts &amp; Popups</a>
+    <a href="dynamic-elements.html" class="nav-link"        id="nav-dynamic">Dynamic Elements</a>
+    <a href="iframe.html"           class="nav-link"        id="nav-iframe">iFrame</a>
+    <a href="file-upload.html"      class="nav-link active" id="nav-upload">File Upload</a>
+    <a href="drag-drop.html"        class="nav-link"        id="nav-dragdrop">Drag &amp; Drop</a>
+  </nav>
+
+  <main id="main-content">
+
+    <div class="page-title">
+      <h1>📁 File Upload</h1>
+      <p>Practice interacting with file input elements — the key technique for uploading files in Selenium.</p>
+    </div>
+
+    <!-- ── Selenium Note ──────────────────────────────────── -->
+    <div class="card" id="card-upload-tip">
+      <h2>💡 Selenium File Upload Tip</h2>
+      <div style="background:#fffaf0; border:1px solid #fbd38d; border-radius:var(--radius); padding:16px; font-size:13.5px; line-height:1.8; color:#744210">
+        <strong>The correct way to upload files in Selenium:</strong><br>
+        Do <strong>NOT</strong> click the upload button to open the OS dialog — Selenium cannot interact with native OS dialogs.<br><br>
+        Instead, use <code>send_keys()</code> directly on the <code>&lt;input type="file"&gt;</code> element with the absolute file path:<br><br>
+        <code>element = driver.find_element(By.ID, "simple-file-input")</code><br>
+        <code>element.send_keys("/absolute/path/to/your/file.txt")</code>
+      </div>
+    </div>
+
+    <!-- ── Simple File Input ──────────────────────────────── -->
+    <div class="card" id="card-simple-upload">
+      <h2>Simple File Input <span class="badge">ID · Name · CSS · XPath</span></h2>
+      <div class="locator-tags">
+        <span class="tag tag-id">id</span>
+        <span class="tag tag-name">name</span>
+        <span class="tag tag-css">CSS Selector</span>
+        <span class="tag tag-xpath">XPath</span>
+      </div>
+
+      <p style="margin-bottom:14px; font-size:13.5px; color:var(--text-light)">
+        A standard visible file input element. The simplest case for Selenium automation.
+      </p>
+
+      <div class="form-group">
+        <label for="simple-file-input">Choose a file</label>
+        <input type="file"
+               id="simple-file-input"
+               name="simpleFile"
+               class="file-input simple-file-field"
+               onchange="showSimpleFile(this)" />
+        <div class="hint" style="margin-top:6px">
+          Locators: <code>By.ID → "simple-file-input"</code> ·
+          <code>By.NAME → "simpleFile"</code> ·
+          <code>By.CSS_SELECTOR → "input[type='file']"</code> ·
+          <code>By.XPATH → "//input[@type='file']"</code>
+        </div>
+      </div>
+
+      <div class="result-box" id="simple-file-result">No file chosen yet.</div>
+    </div>
+
+    <!-- ── Multiple File Input ────────────────────────────── -->
+    <div class="card" id="card-multi-upload">
+      <h2>Multiple File Upload <span class="badge">CSS · XPath Attribute</span></h2>
+      <div class="locator-tags">
+        <span class="tag tag-id">id</span>
+        <span class="tag tag-name">name</span>
+        <span class="tag tag-css">CSS Selector</span>
+        <span class="tag tag-xpath">XPath</span>
+      </div>
+
+      <p style="margin-bottom:14px; font-size:13.5px; color:var(--text-light)">
+        Accepts multiple files at once. Use <code>send_keys()</code> with newline-separated paths.
+      </p>
+
+      <div class="form-group">
+        <label for="multi-file-input">Choose multiple files</label>
+        <input type="file"
+               id="multi-file-input"
+               name="multipleFiles"
+               class="file-input multi-file-field"
+               multiple
+               onchange="showMultiFiles(this)" />
+        <div class="hint" style="margin-top:6px">
+          Locators: <code>By.ID → "multi-file-input"</code> ·
+          <code>By.CSS_SELECTOR → "input[type='file'][multiple]"</code> ·
+          <code>By.XPATH → "//input[@multiple]"</code><br>
+          Upload multiple: <code>element.send_keys("/path/file1.txt\n/path/file2.txt")</code>
+        </div>
+      </div>
+
+      <ul class="file-list" id="multi-file-list"></ul>
+    </div>
+
+    <!-- ── Accept-Filtered Input ──────────────────────────── -->
+    <div class="card" id="card-filtered-upload">
+      <h2>Filtered File Input (images only) <span class="badge">CSS Attribute · XPath</span></h2>
+      <div class="locator-tags">
+        <span class="tag tag-id">id</span>
+        <span class="tag tag-css">CSS Selector</span>
+        <span class="tag tag-xpath">XPath</span>
+      </div>
+
+      <div class="form-group">
+        <label for="image-file-input">Upload an image (PNG, JPG, GIF, WebP)</label>
+        <input type="file"
+               id="image-file-input"
+               name="imageFile"
+               class="file-input image-file-field"
+               accept="image/png, image/jpeg, image/gif, image/webp"
+               onchange="showImagePreview(this)" />
+        <div class="hint" style="margin-top:6px">
+          Locators: <code>By.ID → "image-file-input"</code> ·
+          <code>By.CSS_SELECTOR → "input[accept*='image']"</code> ·
+          <code>By.XPATH → "//input[@name='imageFile']"</code>
+        </div>
+      </div>
+
+      <div id="image-preview-wrap" style="display:none; margin-top:12px">
+        <img id="image-preview" alt="Preview"
+             style="max-width:100%; max-height:200px; border-radius:var(--radius); border:1px solid var(--border)" />
+      </div>
+      <div class="result-box" id="image-file-result">No image chosen yet.</div>
+    </div>
+
+    <!-- ── Drag-and-Drop Upload Zone ──────────────────────── -->
+    <div class="card" id="card-dropzone-upload">
+      <h2>Drag &amp; Drop Upload Zone <span class="badge">ID · Class · CSS</span></h2>
+      <div class="locator-tags">
+        <span class="tag tag-id">id</span>
+        <span class="tag tag-class">class</span>
+        <span class="tag tag-css">CSS Selector</span>
+        <span class="tag tag-xpath">XPath</span>
+      </div>
+
+      <p style="margin-bottom:14px; font-size:13.5px; color:var(--text-light)">
+        A styled drop zone. The actual file input is hidden — use <code>send_keys()</code> on it directly.
+      </p>
+
+      <div class="upload-zone" id="drop-upload-zone" name="dropZone"
+           onclick="document.getElementById('hidden-drop-input').click()"
+           ondragover="event.preventDefault(); this.classList.add('dragover')"
+           ondragleave="this.classList.remove('dragover')"
+           ondrop="handleDrop(event)">
+        <div class="upload-icon">☁️</div>
+        <p><strong>Drag &amp; drop files here</strong></p>
+        <p>or <span class="browse-link">browse to choose</span></p>
+        <p style="font-size:12px; margin-top:8px; color:#a0aec0">Any file type accepted</p>
+      </div>
+
+      <!-- Hidden file input — use send_keys() on this element -->
+      <input type="file"
+             id="hidden-drop-input"
+             name="hiddenDropFile"
+             class="hidden-file-input drop-file-input"
+             onchange="handleDropInputChange(this)" />
+
+      <ul class="file-list" id="drop-file-list"></ul>
+
+      <div class="hint" style="margin-top:14px">
+        The hidden input: <code>By.ID → "hidden-drop-input"</code> ·
+        <code>By.CSS_SELECTOR → "input.drop-file-input"</code><br>
+        Selenium: <code>driver.find_element(By.ID, "hidden-drop-input").send_keys("/path/to/file.pdf")</code><br>
+        (No need to click the zone — <code>send_keys</code> works even on hidden inputs)
+      </div>
+    </div>
+
+    <!-- ── Upload + Submit Form ───────────────────────────── -->
+    <div class="card" id="card-upload-form">
+      <h2>Upload as Part of a Form <span class="badge">ID · Name · CSS · XPath</span></h2>
+      <div class="locator-tags">
+        <span class="tag tag-id">id</span>
+        <span class="tag tag-name">name</span>
+        <span class="tag tag-css">CSS Selector</span>
+        <span class="tag tag-xpath">XPath</span>
+      </div>
+
+      <form id="upload-form" name="uploadForm" onsubmit="submitUploadForm(event)">
+
+        <div class="form-group">
+          <label for="uploader-name">Your Name</label>
+          <input type="text" id="uploader-name" name="uploaderName"
+                 class="text-input uploader-name-field"
+                 placeholder="Enter your name" autocomplete="off" />
+        </div>
+
+        <div class="form-group">
+          <label for="form-file-input">Attach your assignment</label>
+          <input type="file"
+                 id="form-file-input"
+                 name="assignmentFile"
+                 class="file-input assignment-file-field"
+                 onchange="showFormFile(this)" />
+          <div class="hint" style="margin-top:6px">
+            Locators: <code>By.ID → "form-file-input"</code> · <code>By.NAME → "assignmentFile"</code>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="file-description">File Description</label>
+          <input type="text" id="file-description" name="fileDescription"
+                 class="text-input file-desc-field"
+                 placeholder="Describe the file..." autocomplete="off" />
+        </div>
+
+        <div class="btn-group">
+          <button type="submit" id="upload-submit-btn" name="uploadSubmit"
+                  class="btn btn-primary upload-submit-button">
+            Submit Assignment
+          </button>
+          <button type="reset" id="upload-reset-btn" name="uploadReset"
+                  class="btn btn-outline upload-reset-button"
+                  onclick="resetUploadForm()">
+            Reset Form
+          </button>
+        </div>
+
+      </form>
+
+      <div class="result-box" id="upload-form-result" style="margin-top:14px">Fill the form and submit.</div>
+    </div>
+
+  </main>
+
+  <footer id="site-footer">
+    <p>© 2026 <span>QA Testing Lab</span> — Automation Practice by TND</p>
+  </footer>
+
+  <script>
+    function formatBytes(bytes) {
+      if (bytes < 1024) return bytes + ' B';
+      if (bytes < 1048576) return (bytes/1024).toFixed(1) + ' KB';
+      return (bytes/1048576).toFixed(1) + ' MB';
+    }
+
+    function fileIcon(name) {
+      const ext = name.split('.').pop().toLowerCase();
+      const icons = { pdf:'📄', png:'🖼️', jpg:'🖼️', jpeg:'🖼️', gif:'🖼️', webp:'🖼️',
+                      doc:'📝', docx:'📝', xls:'📊', xlsx:'📊', zip:'🗜️', txt:'📃' };
+      return icons[ext] || '📦';
+    }
+
+    function showSimpleFile(input) {
+      const box = document.getElementById('simple-file-result');
+      if (input.files.length) {
+        const f = input.files[0];
+        box.textContent = `✅ File: "${f.name}" · Size: ${formatBytes(f.size)} · Type: ${f.type || 'unknown'}`;
+        box.classList.add('has-result');
+      }
+    }
+
+    function showMultiFiles(input) {
+      const list = document.getElementById('multi-file-list');
+      list.innerHTML = '';
+      Array.from(input.files).forEach(f => {
+        const li = document.createElement('li');
+        li.className = 'file-item';
+        li.innerHTML = `<span class="file-icon">${fileIcon(f.name)}</span>
+          <span class="file-name">${f.name}</span>
+          <span class="file-size">${formatBytes(f.size)}</span>`;
+        list.appendChild(li);
+      });
+    }
+
+    function showImagePreview(input) {
+      const box = document.getElementById('image-file-result');
+      const wrap = document.getElementById('image-preview-wrap');
+      if (input.files && input.files[0]) {
+        const f = input.files[0];
+        box.textContent = `✅ Image: "${f.name}" · ${formatBytes(f.size)}`;
+        box.classList.add('has-result');
+        const reader = new FileReader();
+        reader.onload = e => {
+          document.getElementById('image-preview').src = e.target.result;
+          wrap.style.display = 'block';
+        };
+        reader.readAsDataURL(f);
+      }
+    }
+
+    function handleDrop(e) {
+      e.preventDefault();
+      document.getElementById('drop-upload-zone').classList.remove('dragover');
+      const files = e.dataTransfer.files;
+      renderDropList(files);
+    }
+
+    function handleDropInputChange(input) {
+      renderDropList(input.files);
+    }
+
+    function renderDropList(files) {
+      const list = document.getElementById('drop-file-list');
+      list.innerHTML = '';
+      Array.from(files).forEach(f => {
+        const li = document.createElement('li');
+        li.className = 'file-item';
+        li.innerHTML = `<span class="file-icon">${fileIcon(f.name)}</span>
+          <span class="file-name">${f.name}</span>
+          <span class="file-size">${formatBytes(f.size)}</span>`;
+        list.appendChild(li);
+      });
+    }
+
+    function showFormFile(input) {
+      if (input.files.length) {
+        const box = document.getElementById('upload-form-result');
+        box.textContent = `📎 File attached: "${input.files[0].name}"`;
+        box.classList.add('has-result');
+      }
+    }
+
+    function submitUploadForm(e) {
+      e.preventDefault();
+      const name = document.getElementById('uploader-name').value;
+      const file = document.getElementById('form-file-input').files[0];
+      const box  = document.getElementById('upload-form-result');
+      if (!name || !file) {
+        box.textContent = '⚠️ Please fill in your name and attach a file.';
+        box.classList.remove('has-result');
+      } else {
+        box.textContent = `✅ Submitted by "${name}" with file: "${file.name}"`;
+        box.classList.add('has-result');
+      }
+    }
+
+    function resetUploadForm() {
+      const box = document.getElementById('upload-form-result');
+      box.textContent = 'Fill the form and submit.';
+      box.classList.remove('has-result');
+    }
+  </script>
+</body>
+</html>

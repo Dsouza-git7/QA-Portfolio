@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QA Testing Lab Automation Practice</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .modal-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.5); z-index: 500;
+      align-items: center; justify-content: center;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal-box {
+      background: #fff; border-radius: 12px; padding: 32px;
+      max-width: 420px; width: 90%; box-shadow: 0 8px 40px rgba(0,0,0,0.2);
+      animation: popIn 0.2s ease;
+    }
+    @keyframes popIn { from { transform: scale(0.9); opacity:0; } to { transform: scale(1); opacity:1; } }
+    .modal-box h3 { font-size:18px; color:var(--primary); margin-bottom:10px; }
+    .modal-box p  { font-size:14px; color:var(--text-light); margin-bottom:20px; line-height:1.6; }
+    .modal-actions { display:flex; gap:10px; justify-content:flex-end; }
+  </style>
+</head>
+<body>
+
+  <header id="site-header">
+    <a class="header-brand" id="brand-logo" href="index.html">
+      <div class="header-logo">QTL</div>
+      <div>
+        <div class="header-title">QA Testing Lab</div>
+        <div class="header-subtitle">Automation Practice</div>
+      </div>
+    </a>
+  </header>
+
+  <nav id="main-nav">
+    <a href="index.html"            class="nav-link"        id="nav-home">Home</a>
+    <a href="form-elements.html"    class="nav-link"        id="nav-forms">Form Elements</a>
+    <a href="dropdowns.html"        class="nav-link"        id="nav-dropdowns">Dropdowns</a>
+    <a href="checkboxes-radio.html" class="nav-link"        id="nav-checkboxes">Checkboxes &amp; Radio</a>
+    <a href="tables.html"           class="nav-link"        id="nav-tables">Tables</a>
+    <a href="alerts.html"           class="nav-link active" id="nav-alerts">Alerts &amp; Popups</a>
+    <a href="dynamic-elements.html" class="nav-link"        id="nav-dynamic">Dynamic Elements</a>
+    <a href="iframe.html"           class="nav-link"        id="nav-iframe">iFrame</a>
+    <a href="file-upload.html"      class="nav-link"        id="nav-upload">File Upload</a>
+    <a href="drag-drop.html"        class="nav-link"        id="nav-dragdrop">Drag &amp; Drop</a>
+  </nav>
+
+  <main id="main-content">
+
+    <div class="page-title">
+      <h1>🔔 Alerts &amp; Popups</h1>
+      <p>Practice handling JavaScript browser dialogs and custom modal popups.</p>
+    </div>
+
+    <!-- ── JS Alert ───────────────────────────────────────── -->
+    <div class="card" id="card-js-alert">
+      <h2>JavaScript Alert <span class="badge">ID · Class · XPath</span></h2>
+      <div class="locator-tags">
+        <span class="tag tag-id">id</span>
+        <span class="tag tag-class">class</span>
+        <span class="tag tag-xpath">XPath</span>
+        <span class="tag tag-css">CSS Selector</span>
+      </div>
+
+      <p style="margin-bottom:16px; font-size:13.5px; color:var(--text-light)">
+        A simple alert dialog with an OK button. Selenium handles it with <code>driver.switch_to.alert</code>.
+      </p>
+
+      <div class="btn-group">
+        <button class="btn btn-primary" id="trigger-alert-btn" name="alertButton"
+                class="alert-trigger-button"
+                onclick="triggerAlert()">
+          Trigger JS Alert
+        </button>
+      </div>
+
+      <div class="result-box" id="alert-result" style="margin-top:14px">Click the button to trigger an alert.</div>
+
+      <div class="hint" style="margin-top:10px">
+        Click button: <code>By.ID → "trigger-alert-btn"</code><br>
+        Handle alert:
+        <code>alert = driver.switch_to.alert</code> →
+        <code>alert.text</code> →
+        <code>alert.accept()</code>
+      </div>
+    </div>
+
+    <!-- ── JS Confirm ─────────────────────────────────────── -->
+    <div class="card" id="card-js-confirm">
+      <h2>JavaScript Confirm Dialog <span class="badge">ID · XPath</span></h2>
+      <div class="locator-tags">
+        <span class="tag tag-id">id</span>
+        <span class="tag tag-xpath">XPath</span>
+        <span class="tag tag-class">class</span>
+      </div>
+
+      <p style="margin-bottom:16px; font-size:13.5px; color:var(--text-light)">
+        A confirm dialog with OK and Cancel buttons. Use <code>alert.accept()</code> or <code>alert.dismiss()</code>.
+      </p>
+
+      <div class="btn-group">
+        <button class="btn btn-accent" id="trigger-confirm-btn" name="confirmButton"
+                class="confirm-trigger-button"
+                onclick="triggerConfirm()">
+          Trigger JS Confirm
+        </button>
+      </div>
+
+      <div class="result-box" id="confirm-result" style="margin-top:14px">Click the button to trigger a confirm dialog.</div>
+
+      <div class="hint" style="margin-top:10px">
+        Click button: <code>By.ID → "trigger-confirm-btn"</code><br>
+        Accept: <code>driver.switch_to.alert.accept()</code> ·
+        Dismiss: <code>driver.switch_to.alert.dismiss()</code>
+      </div>
+    </div>
+
+    <!-- ── JS Prompt ──────────────────────────────────────── -->
+    <div class="card" id="card-js-prompt">
+      <h2>JavaScript Prompt Dialog <span class="badge">ID · CSS · XPath</span></h2>
+      <div class="locator-tags">
+        <span class="tag tag-id">id</span>
+        <span class="tag tag-css">CSS Selector</span>
+        <span class="tag tag-xpath">XPath</span>
+      </div>
+
+      <p style="margin-bottom:16px; font-size:13.5px; color:var(--text-light)">
+        A prompt dialog where you can type text. Use <code>alert.send_keys("your text")</code> before accepting.
+      </p>
+
+      <div class="btn-group">
+        <button class="btn btn-success" id="trigger-prompt-btn" name="promptButton"
+                class="prompt-trigger-button"
+                onclick="triggerPrompt()">
+          Trigger JS Prompt
+        </button>
+      </div>
+
+      <div class="result-box" id="prompt-result" style="margin-top:14px">Click the button to trigger a prompt dialog.</div>
+
+      <div class="hint" style="margin-top:10px">
+        Click button: <code>By.ID → "trigger-prompt-btn"</code><br>
+        Type &amp; accept:
+        <code>alert = driver.switch_to.alert</code> →
+        <code>alert.send_keys("QA Testing Lab")</code> →
+        <code>alert.accept()</code>
+      </div>
+    </div>
+
+    <!-- ── Inline Notification ────────────────────────────── -->
+    <div class="card" id="card-inline-notifications">
+      <h2>Inline Notifications <span class="badge">ID · Class · CSS</span></h2>
+      <div class="locator-tags">
+        <span class="tag tag-id">id</span>
+        <span class="tag tag-class">class</span>
+        <span class="tag tag-css">CSS Selector</span>
+        <span class="tag tag-xpath">XPath</span>
+      </div>
+
+      <p style="margin-bottom:16px; font-size:13.5px; color:var(--text-light)">
+        These are inline page alerts — no <code>switch_to.alert</code> needed. Interact with them like regular elements.
+      </p>
+
+      <div class="btn-group" style="margin-bottom:16px">
+        <button class="btn btn-success btn-sm" id="show-success-alert-btn" onclick="showInlineAlert('success')">Show Success</button>
+        <button class="btn btn-danger  btn-sm" id="show-error-alert-btn"   onclick="showInlineAlert('danger')">Show Error</button>
+        <button class="btn btn-primary btn-sm" id="show-info-alert-btn"    onclick="showInlineAlert('info')">Show Info</button>
+        <button class="btn btn-outline btn-sm" id="hide-all-alerts-btn"    onclick="hideAllAlerts()">Hide All</button>
+      </div>
+
+      <div class="alert alert-success" id="success-notification" name="successAlert" role="alert">
+        ✅ <strong>Success!</strong> Your action was completed successfully.
+      </div>
+      <div class="alert alert-danger" id="error-notification" name="errorAlert" role="alert">
+        ❌ <strong>Error!</strong> Something went wrong. Please try again.
+      </div>
+      <div class="alert alert-info" id="info-notification" name="infoAlert" role="alert">
+        ℹ️ <strong>Info:</strong> This is an informational message for your attention.
+      </div>
+
+      <div class="hint" style="margin-top:10px">
+        Wait for element: <code>WebDriverWait(driver, 5).until(EC.visibility_of_element_located((By.ID, "success-notification")))</code><br>
+        Read text: <code>By.ID → "success-notification"</code> ·
+        Check visible: <code>element.is_displayed()</code>
+      </div>
+    </div>
+
+    <!-- ── Modal Popup ────────────────────────────────────── -->
+    <div class="card" id="card-modal-popup">
+      <h2>Custom Modal Popup <span class="badge">ID · Class · CSS · XPath</span></h2>
+      <div class="locator-tags">
+        <span class="tag tag-id">id</span>
+        <span class="tag tag-class">class</span>
+        <span class="tag tag-css">CSS Selector</span>
+        <span class="tag tag-xpath">XPath</span>
+      </div>
+
+      <p style="margin-bottom:16px; font-size:13.5px; color:var(--text-light)">
+        A custom HTML modal — not a JS browser dialog. Interact with its buttons directly as DOM elements.
+      </p>
+
+      <div class="btn-group">
+        <button class="btn btn-primary" id="open-modal-btn" name="openModal"
+                class="modal-open-button"
+                onclick="openModal()">
+          Open Modal Dialog
+        </button>
+        <button class="btn btn-danger" id="open-danger-modal-btn"
+                onclick="openDangerModal()">
+          Open Confirm Delete Modal
+        </button>
+      </div>
+
+      <div class="result-box" id="modal-result" style="margin-top:14px">Open a modal to interact with it.</div>
+
+      <div class="hint" style="margin-top:10px">
+        Open modal: <code>By.ID → "open-modal-btn"</code><br>
+        Interact inside: <code>By.ID → "modal-confirm-btn"</code> · <code>By.ID → "modal-cancel-btn"</code><br>
+        XPath inside modal: <code>By.XPATH → "//div[@id='info-modal']//button[@id='modal-confirm-btn']"</code>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ── Info Modal ──────────────────────────────────────── -->
+  <div class="modal-overlay" id="info-modal" name="infoModal">
+    <div class="modal-box" id="info-modal-box">
+      <h3 id="modal-title">📋 Information Modal</h3>
+      <p id="modal-body">
+        This is a custom modal dialog built with HTML and CSS.
+        Unlike JS alerts, you interact with its elements directly using Selenium without switching context.
+      </p>
+      <div class="form-group">
+        <label for="modal-input">Enter a value:</label>
+        <input type="text" id="modal-input" name="modalInput"
+               class="modal-text-input" placeholder="Type something..." />
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-outline" id="modal-cancel-btn" name="cancelModal"
+                onclick="closeModal('info-modal', 'Modal cancelled.')">Cancel</button>
+        <button class="btn btn-primary" id="modal-confirm-btn" name="confirmModal"
+                onclick="confirmModal()">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Danger Modal ────────────────────────────────────── -->
+  <div class="modal-overlay" id="danger-modal" name="dangerModal">
+    <div class="modal-box" id="danger-modal-box">
+      <h3 id="danger-modal-title" style="color:var(--danger)">⚠️ Confirm Deletion</h3>
+      <p id="danger-modal-body">
+        Are you sure you want to delete this record? This action cannot be undone.
+      </p>
+      <div class="modal-actions">
+        <button class="btn btn-outline" id="danger-modal-cancel-btn"
+                onclick="closeModal('danger-modal', 'Deletion cancelled.')">Cancel</button>
+        <button class="btn btn-danger"  id="danger-modal-confirm-btn"
+                onclick="closeModal('danger-modal', 'Record deleted!')">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <footer id="site-footer">
+    <p>© 2026 <span>QA Testing Lab</span> — Automation Practice by TND</p>
+  </footer>
+
+  <script>
+    function triggerAlert() {
+      alert('This is a Selenium practice alert!\nHandle it with: driver.switch_to.alert.accept()');
+      document.getElementById('alert-result').textContent = '✅ Alert was triggered and accepted.';
+      document.getElementById('alert-result').classList.add('has-result');
+    }
+
+    function triggerConfirm() {
+      const result = confirm('Do you want to proceed with this action?');
+      const box = document.getElementById('confirm-result');
+      box.textContent = result ? '✅ You clicked OK (accept).' : '✅ You clicked Cancel (dismiss).';
+      box.classList.add('has-result');
+    }
+
+    function triggerPrompt() {
+      const val = prompt('Please enter your name:', 'QA Testing Lab Student');
+      const box = document.getElementById('prompt-result');
+      box.textContent = val !== null ? `✅ You entered: "${val}"` : '✅ Prompt was dismissed (Cancel).';
+      box.classList.add('has-result');
+    }
+
+    function showInlineAlert(type) {
+      hideAllAlerts();
+      const ids = { success: 'success-notification', danger: 'error-notification', info: 'info-notification' };
+      document.getElementById(ids[type]).classList.add('show');
+    }
+
+    function hideAllAlerts() {
+      document.querySelectorAll('.alert').forEach(a => a.classList.remove('show'));
+    }
+
+    function openModal()       { document.getElementById('info-modal').classList.add('open'); }
+    function openDangerModal() { document.getElementById('danger-modal').classList.add('open'); }
+
+    function confirmModal() {
+      const val = document.getElementById('modal-input').value;
+      closeModal('info-modal', val ? `Modal confirmed with input: "${val}"` : 'Modal confirmed (no input).');
+    }
+
+    function closeModal(id, msg) {
+      document.getElementById(id).classList.remove('open');
+      const box = document.getElementById('modal-result');
+      box.textContent = '✅ ' + msg;
+      box.classList.add('has-result');
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QA Testing Lab Automation Practice</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header id="site-header">
+    <a class="header-brand" id="brand-logo" href="index.html">
+      <div class="header-logo">QTL</div>
+      <div>
+        <div class="header-title">QA Testing Lab</div>
+        <div class="header-subtitle">QA Testing Lab Automation Practice</div>
+      </div>
+    </a>
+  </header>
+
+  <!-- NAV -->
+  <nav id="main-nav">
+    <a href="index.html"              class="nav-link active"    id="nav-home">Home</a>
+    <a href="form-elements.html"      class="nav-link"           id="nav-forms">Form Elements</a>
+    <a href="dropdowns.html"          class="nav-link"           id="nav-dropdowns">Dropdowns</a>
+    <a href="checkboxes-radio.html"   class="nav-link"           id="nav-checkboxes">Checkboxes &amp; Radio</a>
+    <a href="tables.html"             class="nav-link"           id="nav-tables">Tables</a>
+    <a href="alerts.html"             class="nav-link"           id="nav-alerts">Alerts &amp; Popups</a>
+    <a href="dynamic-elements.html"   class="nav-link"           id="nav-dynamic">Dynamic Elements</a>
+    <a href="iframe.html"             class="nav-link"           id="nav-iframe">iFrame</a>
+    <a href="file-upload.html"        class="nav-link"           id="nav-upload">File Upload</a>
+    <a href="drag-drop.html"          class="nav-link"           id="nav-dragdrop">Drag &amp; Drop</a>
+  </nav>
+
+  <main id="main-content">
+
+    <!-- HERO -->
+    <section class="hero" id="hero-section">
+      <h1>Welcome to <span>QA Testing Lab</span><br>Automation Practice</h1>
+      <p>
+        A dedicated practice ground for Selenium WebDriver students.
+        Each page focuses on different HTML elements — designed so you can
+        exercise every element locator strategy from day one.
+      </p>
+      <div class="hero-badges">
+        <span class="hero-badge">ID</span>
+        <span class="hero-badge">Name</span>
+        <span class="hero-badge">Class</span>
+        <span class="hero-badge">Tag Name</span>
+        <span class="hero-badge">Link Text</span>
+        <span class="hero-badge">Partial Link Text</span>
+        <span class="hero-badge">CSS Selector</span>
+        <span class="hero-badge">XPath</span>
+      </div>
+    </section>
+
+    <!-- LOCATOR REFERENCE CARD -->
+    <div class="card" id="locator-reference-card">
+      <h2>🔍 Locator Strategy Quick Reference</h2>
+      <div class="table-wrapper">
+        <table id="locator-reference-table">
+          <thead>
+            <tr>
+              <th>Strategy</th>
+              <th>Selenium / Python Example</th>
+              <th>Best For</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="locator-row" id="row-id">
+              <td><span class="tag tag-id">ID</span></td>
+              <td><code>driver.find_element(By.ID, "username")</code></td>
+              <td>Unique elements with an <code>id</code> attribute</td>
+            </tr>
+            <tr class="locator-row" id="row-name">
+              <td><span class="tag tag-name">Name</span></td>
+              <td><code>driver.find_element(By.NAME, "email")</code></td>
+              <td>Form inputs with a <code>name</code> attribute</td>
+            </tr>
+            <tr class="locator-row" id="row-class">
+              <td><span class="tag tag-class">Class Name</span></td>
+              <td><code>driver.find_element(By.CLASS_NAME, "btn-primary")</code></td>
+              <td>Elements sharing a CSS class</td>
+            </tr>
+            <tr class="locator-row" id="row-tag">
+              <td><span class="tag tag-tag">Tag Name</span></td>
+              <td><code>driver.find_elements(By.TAG_NAME, "input")</code></td>
+              <td>All elements of a specific HTML tag</td>
+            </tr>
+            <tr class="locator-row" id="row-linktext">
+              <td><span class="tag tag-link">Link Text</span></td>
+              <td><code>driver.find_element(By.LINK_TEXT, "Form Elements")</code></td>
+              <td>Anchor tags with exact text match</td>
+            </tr>
+            <tr class="locator-row" id="row-partiallinktext">
+              <td><span class="tag tag-link">Partial Link Text</span></td>
+              <td><code>driver.find_element(By.PARTIAL_LINK_TEXT, "Form")</code></td>
+              <td>Anchor tags with partial text match</td>
+            </tr>
+            <tr class="locator-row" id="row-css">
+              <td><span class="tag tag-css">CSS Selector</span></td>
+              <td><code>driver.find_element(By.CSS_SELECTOR, "input#username")</code></td>
+              <td>Complex selections using CSS rules</td>
+            </tr>
+            <tr class="locator-row" id="row-xpath">
+              <td><span class="tag tag-xpath">XPath</span></td>
+              <td><code>driver.find_element(By.XPATH, "//input[@id='username']")</code></td>
+              <td>Any element — most powerful &amp; flexible</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- PAGE CARDS -->
+    <div class="page-title">
+      <h1>Practice Pages</h1>
+      <p>Click any card below to navigate to that practice page.</p>
+    </div>
+
+    <div class="pages-grid" id="pages-grid">
+
+      <a href="form-elements.html" class="page-card" id="card-forms">
+        <div class="page-card-icon">📝</div>
+        <h3>Form Elements</h3>
+        <p>Text, email, password, number, textarea, buttons and more.</p>
+      </a>
+
+      <a href="dropdowns.html" class="page-card" id="card-dropdowns">
+        <div class="page-card-icon">📋</div>
+        <h3>Dropdowns &amp; Lists</h3>
+        <p>Single select, multi-select, and custom dropdowns.</p>
+      </a>
+
+      <a href="checkboxes-radio.html" class="page-card" id="card-checkboxes">
+        <div class="page-card-icon">☑️</div>
+        <h3>Checkboxes &amp; Radio</h3>
+        <p>Individual and grouped selection controls.</p>
+      </a>
+
+      <a href="tables.html" class="page-card" id="card-tables">
+        <div class="page-card-icon">📊</div>
+        <h3>Tables</h3>
+        <p>Static and searchable data tables with various row/cell structures.</p>
+      </a>
+
+      <a href="alerts.html" class="page-card" id="card-alerts">
+        <div class="page-card-icon">🔔</div>
+        <h3>Alerts &amp; Popups</h3>
+        <p>JS alert, confirm, prompt dialogs and inline modals.</p>
+      </a>
+
+      <a href="dynamic-elements.html" class="page-card" id="card-dynamic">
+        <div class="page-card-icon">⚡</div>
+        <h3>Dynamic Elements</h3>
+        <p>Elements that load, appear, disappear and change over time.</p>
+      </a>
+
+      <a href="iframe.html" class="page-card" id="card-iframe">
+        <div class="page-card-icon">🖼️</div>
+        <h3>iFrame</h3>
+        <p>Practice switching between frames and interacting with iframe content.</p>
+      </a>
+
+      <a href="file-upload.html" class="page-card" id="card-upload">
+        <div class="page-card-icon">📁</div>
+        <h3>File Upload</h3>
+        <p>File input elements and drag-and-drop upload zones.</p>
+      </a>
+
+      <a href="drag-drop.html" class="page-card" id="card-dragdrop">
+        <div class="page-card-icon">🖱️</div>
+        <h3>Drag &amp; Drop</h3>
+        <p>Draggable items and droppable target zones.</p>
+      </a>
+
+    </div>
+
+  </main>
+
+  <footer id="site-footer">
+    <p>© 2026 <span>QA Testing Lab</span> — Automation Practice by TND</p>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QA Testing Lab Automation Practice</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <header id="site-header">
+    <a class="header-brand" id="brand-logo" href="index.html">
+      <div class="header-logo">QTL</div>
+      <div>
+        <div class="header-title">QA Testing Lab</div>
+        <div class="header-subtitle">Automation Practice</div>
+      </div>
+    </a>
+  </header>
+
+  <nav id="main-nav">
+    <a href="index.html"            class="nav-link"        id="nav-home">Home</a>
+    <a href="form-elements.html"    class="nav-link"        id="nav-forms">Form Elements</a>
+    <a href="dropdowns.html"        class="nav-link"        id="nav-dropdowns">Dropdowns</a>
+    <a href="checkboxes-radio.html" class="nav-link active" id="nav-checkboxes">Checkboxes &amp; Radio</a>
+    <a href="tables.html"           class="nav-link"        id="nav-tables">Tables</a>
+    <a href="alerts.html"           class="nav-link"        id="nav-alerts">Alerts &amp; Popups</a>
+    <a href="dynamic-elements.html" class="nav-link"        id="nav-dynamic">Dynamic Elements</a>
+    <a href="iframe.html"           class="nav-link"        id="nav-iframe">iFrame</a>
+    <a href="file-upload.html"      class="nav-link"        id="nav-upload">File Upload</a>
+    <a href="drag-drop.html"        class="nav-link"        id="nav-dragdrop">Drag &amp; Drop</a>
+  </nav>
+
+  <main id="main-content">
+
+    <div class="page-title">
+      <h1>☑️ Checkboxes &amp; Radio Buttons</h1>
+      <p>Practice checking, unchecking, and verifying state of selection controls.</p>
+    </div>
+
+    <!-- ── Individual Checkboxes ──────────────────────────── -->
+    <div class="card" id="card-individual-checkboxes">
+      <h2>Individual Checkboxes <span class="badge">ID · Name · CSS · XPath</span></h2>
+      <div class="locator-tags">
+        <span class="tag tag-id">id</span>
+        <span class="tag tag-name">name</span>
+        <span class="tag tag-class">class</span>
+        <span class="tag tag-css">CSS Selector</span>
+        <span class="tag tag-xpath">XPath</span>
+      </div>
+
+      <div class="check-group" id="individual-checkboxes-group">
+        <label class="check-item" id="label-terms">
+          <input type="checkbox" id="terms-checkbox" name="termsAccepted"
+                 class="individual-checkbox terms-check"
+                 onchange="updateCheckResult()" />
+          I agree to the Terms and Conditions
+        </label>
+
+        <label class="check-item" id="label-newsletter">
+          <input type="checkbox" id="newsletter-checkbox" name="newsletter"
+                 class="individual-checkbox newsletter-check"
+                 onchange="updateCheckResult()" />
+          Subscribe to newsletter
+        </label>
+
+        <label class="check-item" id="label-notifications">
+          <input type="checkbox" id="notifications-checkbox" name="notifications"
+                 class="individual-checkbox notification-check" checked
+                 onchange="updateCheckResult()" />
+          Enable push notifications (pre-checked)
+        </label>
+
+        <label class="check-item" id="label-disabled-check">
+          <input type="checkbox" id="disabled-checkbox" name="disabledOption"
+                 class="individual-checkbox disabled-check"
+                 disabled />
+          Disabled checkbox (cannot interact)
+        </label>
+
+        <label class="check-item" id="label-checked-disabled">
+          <input type="checkbox" id="checked-disabled-checkbox" name="checkedDisabled"
+                 class="individual-checkbox"
+                 checked disabled />
+          Checked + disabled checkbox
+        </label>
+      </div>
+
+      <div class="result-box" id="check-result" style="margin-top:14px">Toggle checkboxes to see state changes.</div>
+
+      <div class="hint" style="margin-top:10px">
+        Locators: <code>By.ID → "terms-checkbox"</code> ·
+        <code>By.NAME → "newsletter"</code> ·
+        <code>By.CSS_SELECTOR → "input[type='checkbox']"</code> ·
+        <code>By.XPATH → "//input[@type='checkbox' and @id='notifications-checkbox']"</code><br>
+        Verify state: <code>element.is_selected()</code> · <code>element.is_enabled()</code>
+      </div>
+    </div>
+
+    <!-- ── Grouped Checkboxes ─────────────────────────────── -->
+    <div class="card" id="card-grouped-checkboxes">
+      <h2>Grouped Checkboxes <span class="badge">Class · XPath Sibling · CSS nth-child</span></h2>
+      <div class="locator-tags">
+        <span class="tag tag-class">class</span>
+        <span class="tag tag-css">CSS Selector</span>
+        <span class="tag tag-xpath">XPath</span>
+        <span class="tag tag-name">name</span>
+      </div>
+
+      <p style="margin-bottom:14px; font-size:13.5px; color:var(--text-light)">
+        Select all the automation tools you are familiar with:
+      </p>
+
+      <div class="check-group" id="tools-checkbox-group" name="automationTools">
+        <label class="check-item tool-item" id="label-selenium">
+          <input type="checkbox" id="tool-selenium"   name="tools" value="selenium"
+                 class="tool-checkbox group-checkbox" onchange="updateToolResult()" />
+          Selenium WebDriver
+        </label>
+        <label class="check-item tool-item" id="label-cypress">
+          <input type="checkbox" id="tool-cypress"    name="tools" value="cypress"
+                 class="tool-checkbox group-checkbox" onchange="updateToolResult()" />
+          Cypress
+        </label>
+        <label class="check-item tool-item" id="label-playwright">
+          <input type="checkbox" id="tool-playwright" name="tools" value="playwright"
+                 class="tool-checkbox group-checkbox" onchange="updateToolResult()" />
+          Playwright
+        </label>
+        <label class="check-item tool-item" id="label-appium">
+          <input type="checkbox" id="tool-appium"     name="tools" value="appium"
+                 class="tool-checkbox group-checkbox" onchange="updateToolResult()" />
+          Appium
+        </label>
+        <label class="check-item tool-item" id="label-postman">
+          <input type="checkbox" id="tool-postman"    name="tools" value="postman"
+                 class="tool-checkbox group-checkbox" onchange="updateToolResult()" />
+          Postman
+        </label>
+        <label class="check-item tool-item" id="label-jmeter">
+          <input type="checkbox" id="tool-jmeter"     name="tools" value="jmeter"
+                 class="tool-checkbox group-checkbox" onchange="updateToolResult()" />
+          JMeter
+        </label>
+      </div>
+
+      <div class="btn-group" style="margin-top:14px">
+        <button class="btn btn-primary btn-sm" id="select-all-btn"   onclick="selectAll()">Select All</button>
+        <button class="btn btn-outline btn-sm" id="deselect-all-btn" onclick="deselectAll()">Deselect All</button>
+      </div>
+
+      <div class="result-box" id="tools-result" style="margin-top:14px">No tools selected.</div>
+
+      <div class="hint" style="margin-top:10px">
+        Locators: <code>By.CLASS_NAME → "group-checkbox"</code> ·
+        <code>By.CSS_SELECTOR → "input.tool-checkbox"</code> ·
+        <code>By.NAME → "tools"</code> ·
+        <code>By.XPATH → "//input[@name='tools']"</code> ·
+        <code>By.XPATH → "(//input[@class='tool-checkbox group-checkbox'])[3]"</code>
+      </div>
+    </div>
+
+    <!-- ── Radio Buttons ──────────────────────────────────── -->
+    <div class="card" id="card-radio-buttons">
+      <h2>Radio Button Group <span class="badge">ID · Name · CSS · XPath</span></h2>
+      <div class="locator-tags">
+        <span class="tag tag-id">id</span>
+        <span class="tag tag-name">name</span>
+        <span class="tag tag-css">CSS Selector</span>
+        <span class="tag tag-xpath">XPath</span>
+      </div>
+
+      <p style="margin-bottom:14px; font-size:13.5px; color:var(--text-light)">
+        Select your experience level:
+      </p>
+
+      <div class="radio-group" id="experience-radio-group">
+        <label class="radio-item experience-item" id="label-beginner">
+          <input type="radio" id="radio-beginner"     name="experience" value="beginner"
+                 class="experience-radio radio-btn"
+                 onchange="updateRadioResult()" />
+          Beginner (0–1 year)
+        </label>
+        <label class="radio-item experience-item" id="label-intermediate">
+          <input type="radio" id="radio-intermediate" name="experience" value="intermediate"
+                 class="experience-radio radio-btn"
+                 onchange="updateRadioResult()" />
+          Intermediate (1–3 years)
+        </label>
+        <label class="radio-item experience-item" id="label-advanced">
+          <input type="radio" id="radio-advanced"     name="experience" value="advanced"
+                 class="experience-radio radio-btn"
+                 onchange="updateRadioResult()" />
+          Advanced (3–5 years)
+        </label>
+        <label class="radio-item experience-item" id="label-expert">
+          <input type="radio" id="radio-expert"       name="experience" value="expert"
+                 class="experience-radio radio-btn"
+                 onchange="updateRadioResult()" />
+          Expert (5+ years)
+        </label>
+      </div>
+
+      <div class="result-box" id="radio-result" style="margin-top:14px">Select an experience level.</div>
+
+      <div class="hint" style="margin-top:10px">
+        Locators: <code>By.ID → "radio-advanced"</code> ·
+        <code>By.NAME → "experience"</code> ·
+        <code>By.CSS_SELECTOR → "input[type='radio'][value='expert']"</code> ·
+        <code>By.XPATH → "//input[@name='experience' and @value='intermediate']"</code>
+      </div>
+    </div>
+
+    <!-- ── Multiple Radio Groups ──────────────────────────── -->
+    <div class="card" id="card-multi-radio-groups">
+      <h2>Multiple Radio Groups <span class="badge">XPath Grouping · CSS :checked</span></h2>
+      <div class="locator-tags">
+        <span class="tag tag-name">name</span>
+        <span class="tag tag-css">CSS Selector</span>
+        <span class="tag tag-xpath">XPath</span>
+        <span class="tag tag-id">id</span>
+      </div>
+
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px; flex-wrap:wrap">
+
+        <div>
+          <p style="font-weight:600; margin-bottom:12px; font-size:14px; color:var(--primary)">Preferred Language</p>
+          <div class="radio-group" id="language-radio-group">
+            <label class="radio-item lang-item" id="label-python">
+              <input type="radio" id="lang-python"     name="language" value="python"
+                     class="language-radio" onchange="updateMultiRadio()" />
+              Python
+            </label>
+            <label class="radio-item lang-item" id="label-java">
+              <input type="radio" id="lang-java"       name="language" value="java"
+                     class="language-radio" onchange="updateMultiRadio()" />
+              Java
+            </label>
+            <label class="radio-item lang-item" id="label-javascript">
+              <input type="radio" id="lang-javascript" name="language" value="javascript"
+                     class="language-radio" onchange="updateMultiRadio()" />
+              JavaScript
+            </label>
+            <label class="radio-item lang-item" id="label-csharp">
+              <input type="radio" id="lang-csharp"     name="language" value="csharp"
+                     class="language-radio" onchange="updateMultiRadio()" />
+              C#
+            </label>
+          </div>
+        </div>
+
+        <div>
+          <p style="font-weight:600; margin-bottom:12px; font-size:14px; color:var(--primary)">Test Type</p>
+          <div class="radio-group" id="testtype-radio-group">
+            <label class="radio-item testtype-item" id="label-unit">
+              <input type="radio" id="test-unit"        name="testType" value="unit"
+                     class="testtype-radio" onchange="updateMultiRadio()" />
+              Unit Testing
+            </label>
+            <label class="radio-item testtype-item" id="label-integration">
+              <input type="radio" id="test-integration" name="testType" value="integration"
+                     class="testtype-radio" onchange="updateMultiRadio()" />
+              Integration Testing
+            </label>
+            <label class="radio-item testtype-item" id="label-e2e">
+              <input type="radio" id="test-e2e"         name="testType" value="e2e"
+                     class="testtype-radio" onchange="updateMultiRadio()" />
+              End-to-End Testing
+            </label>
+            <label class="radio-item testtype-item" id="label-performance">
+              <input type="radio" id="test-performance" name="testType" value="performance"
+                     class="testtype-radio" onchange="updateMultiRadio()" />
+              Performance Testing
+            </label>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="result-box" id="multi-radio-result" style="margin-top:14px">Select language and test type.</div>
+
+      <div class="hint" style="margin-top:10px">
+        Locators by group: <code>By.XPATH → "//input[@name='language']"</code> (returns all in group) ·
+        <code>By.CSS_SELECTOR → "input[name='testType']:checked"</code> (gets selected one) ·
+        <code>By.XPATH → "//input[@name='testType' and @value='e2e']"</code>
+      </div>
+    </div>
+
+  </main>
+
+  <footer id="site-footer">
+    <p>© 2026 <span>QA Testing Lab</span> — Automation Practice by TND</p>
+  </footer>
+
+  <script>
+    function updateCheckResult() {
+      const checks = document.querySelectorAll('.individual-checkbox:not([disabled])');
+      const checked = Array.from(checks).filter(c => c.checked).map(c => c.name);
+      const box = document.getElementById('check-result');
+      box.textContent = checked.length
+        ? '✅ Checked: ' + checked.join(', ')
+        : '⬜ No checkboxes selected.';
+      box.classList.toggle('has-result', checked.length > 0);
+    }
+
+    function updateToolResult() {
+      const tools = Array.from(document.querySelectorAll('.tool-checkbox:checked')).map(c => c.value);
+      const box = document.getElementById('tools-result');
+      box.textContent = tools.length ? '✅ Selected tools: ' + tools.join(', ') : 'No tools selected.';
+      box.classList.toggle('has-result', tools.length > 0);
+    }
+
+    function selectAll() {
+      document.querySelectorAll('.tool-checkbox').forEach(c => c.checked = true);
+      updateToolResult();
+    }
+
+    function deselectAll() {
+      document.querySelectorAll('.tool-checkbox').forEach(c => c.checked = false);
+      updateToolResult();
+    }
+
+    function updateRadioResult() {
+      const sel = document.querySelector('input[name="experience"]:checked');
+      const box = document.getElementById('radio-result');
+      if (sel) {
+        box.textContent = '✅ Experience level: ' + sel.value + ' (id=' + sel.id + ')';
+        box.classList.add('has-result');
+      }
+    }
+
+    function updateMultiRadio() {
+      const lang = document.querySelector('input[name="language"]:checked');
+      const test = document.querySelector('input[name="testType"]:checked');
+      const box  = document.getElementById('multi-radio-result');
+      const parts = [];
+      if (lang) parts.push('Language: ' + lang.value);
+      if (test) parts.push('Test type: ' + test.value);
+      box.textContent = parts.length ? '✅ ' + parts.join(' | ') : 'Select language and test type.';
+      box.classList.toggle('has-result', parts.length > 0);
+    }
+  </script>
+</body>
+</html>

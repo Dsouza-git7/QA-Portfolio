@@ -1,65 +1,390 @@
-# QA Testing Lab – All Frontend Elements
+# \# QA Testing Lab – All Frontend Elements
 
-## Project Overview
+# 
 
-QA Testing Lab – All Frontend Elements is a Java-based Selenium WebDriver automation framework developed to automate and validate commonly used frontend web elements and interactions.
+# \## Project Overview
 
-The framework uses Java, Selenium WebDriver, TestNG and Maven, following the Page Object Model (POM) design pattern to maintain reusable, structured and maintainable automation scripts.
+# 
 
-The project also incorporates Continuous Integration (CI) using GitHub Actions to automate the build and execution of Selenium test cases, validate code changes and publish test execution results.
+# QA Testing Lab – All Frontend Elements is a Java-based Selenium WebDriver automation framework developed to automate and validate commonly used frontend web elements and interactions.
 
-## Project Objectives
+# 
 
-- Automate frontend web element interactions using Selenium WebDriver.
-- Implement the Page Object Model (POM) design pattern.
-- Develop reusable automation scripts using Java and TestNG.
-- Validate application behaviour through automated assertions.
-- Manage project dependencies and test execution using Maven.
-- Integrate automated test execution into a CI pipeline using GitHub Actions.
-- Generate and review automated test execution reports.
+# The framework uses Java, Selenium WebDriver, TestNG and Maven, following the Page Object Model (POM) design pattern to maintain reusable, structured and maintainable automation scripts.
 
-## Technologies and Tools
+# 
 
-| Technology / Tool | Purpose |
-|---|---|
-| Java 26 | Programming language |
-| Selenium WebDriver 4.49.0 | Browser automation |
-| TestNG 7.12.0 | Test execution and assertions |
-| Maven | Dependency and project management |
-| IntelliJ IDEA | Development environment |
-| Google Chrome | Browser under test |
-| Git / GitHub | Version control and source code management |
-| GitHub Actions | Continuous Integration and automated test execution |
+# The project also incorporates Continuous Integration (CI) using GitHub Actions to automate the build and execution of Selenium test cases, validate code changes and publish test execution reports.
 
-## Continuous Integration
+# 
 
-GitHub Actions is used to integrate automated Selenium test execution into the development workflow.
+# Automated test execution results are generated using TestNG and ExtentReports, with automatic screenshot capture for failed tests.
 
-The CI pipeline is designed to:
+# 
 
-- Trigger automated builds when code is pushed to GitHub.
-- Execute the Maven build.
-- Run Selenium TestNG test cases using Chrome.
-- Capture test execution results.
-- Publish TestNG reports as workflow artifacts.
-- Provide visibility into successful and failed pipeline executions.
+# \## Project Objectives
 
-## Test Execution Summary
+# 
 
-The current local TestNG execution contains 11 test methods.
+# \- Automate frontend web element interactions using Selenium WebDriver.
 
-| Metric | Result |
-|---|---:|
-| Total Test Methods | 11 |
-| Executed | 11 |
-| Passed | 11 |
-| Failed | 0 |
-| Skipped | 0 |
-| Execution Time | Approximately 1 minute 24 seconds |
+# \- Implement the Page Object Model (POM) design pattern.
 
-The GitHub Actions execution results will be documented separately once the CI workflow has been configured and verified.
+# \- Develop reusable automation scripts using Java and TestNG.
 
-## Future Enhancements
+# \- Validate application behaviour through automated assertions.
 
-- Expand automated frontend test coverage.
-- Improve test reporting and execution diagnostics.
+# \- Manage project dependencies and test execution using Maven.
+
+# \- Integrate automated test execution into a CI pipeline using GitHub Actions.
+
+# \- Generate and review automated test execution reports.
+
+# \- Capture and attach screenshots automatically when tests fail.
+
+# 
+
+# \## Technologies and Tools
+
+# 
+
+# | Technology / Tool | Purpose |
+
+# |---|---|
+
+# | Java 26 | Programming language |
+
+# | Selenium WebDriver 4.49.0 | Browser automation |
+
+# | TestNG 7.12.0 | Test execution and assertions |
+
+# | Maven | Dependency and project management |
+
+# | ExtentReports 5.1.2 | HTML test execution reporting |
+
+# | IntelliJ IDEA | Development environment |
+
+# | Google Chrome | Browser under test |
+
+# | Git / GitHub | Version control and source code management |
+
+# | GitHub Actions | Continuous Integration and automated test execution |
+
+# 
+
+# \## Framework Design
+
+# 
+
+# The project follows the \*\*Page Object Model (POM)\*\* design pattern.
+
+# 
+
+# \- Page classes contain locators and reusable methods for interacting with web elements.
+
+# \- BasePage provides common page interaction functionality.
+
+# \- BaseTest manages browser setup and teardown.
+
+# \- Test classes contain test scenarios and assertions.
+
+# \- ExtentReportListener manages test reporting and failure screenshot capture.
+
+# 
+
+# This separation improves code organisation, reusability and maintainability.
+
+# 
+
+# \## Test Coverage
+
+# 
+
+# The framework covers the following frontend elements and interactions:
+
+# 
+
+# | Module | Test Coverage |
+
+# |---|---|
+
+# | Form Elements | Text inputs, special inputs, text areas, buttons and links |
+
+# | Dropdowns | Single select, dependent dropdowns, multi-select and custom dropdowns |
+
+# | Checkboxes and Radio Buttons | Individual and grouped selections |
+
+# | Tables | Static, searchable, sortable and complex tables |
+
+# | Alerts and Popups | JavaScript alerts, confirmation dialogs, prompts and custom modals |
+
+# | Dynamic Elements | Show/hide elements, delayed elements, loading indicators and notifications |
+
+# | iFrames | Single and multiple iFrame interactions |
+
+# | File Upload | Single, multiple and form-based file uploads |
+
+# | Drag and Drop | Drag-and-drop interactions and Kanban-style elements |
+
+# 
+
+# \## Test Execution Summary
+
+# 
+
+# The current local TestNG execution contains 11 automated test methods.
+
+# 
+
+# | Metric | Result |
+
+# |---|---:|
+
+# | Total Test Methods | 11 |
+
+# | Executed | 11 |
+
+# | Passed | 11 |
+
+# | Failed | 0 |
+
+# | Skipped | 0 |
+
+# 
+
+# \## Test Reporting
+
+# 
+
+# The framework generates two types of HTML test execution reports.
+
+# 
+
+# \### 1. TestNG HTML Report
+
+# 
+
+# \- Displays test execution results.
+
+# \- Provides individual test method status.
+
+# \- Shows passed, failed and skipped test counts.
+
+# \- Provides execution details and timings.
+
+# 
+
+# \### 2. ExtentReports Dashboard
+
+# 
+
+# ExtentReports provides a more detailed visual representation of test execution.
+
+# 
+
+# Features include:
+
+# 
+
+# \- Test execution summary and status.
+
+# \- Individual test method results.
+
+# \- Execution timestamps and duration.
+
+# \- Pass/fail status and exception details.
+
+# \- Automatic screenshot capture when a test fails.
+
+# \- Screenshots embedded directly into the HTML report using Base64 encoding.
+
+# 
+
+# \*\*Failure Screenshot Handling\*\*
+
+# 
+
+# When a test fails, the ExtentReportListener automatically:
+
+# 
+
+# 1\. Captures a screenshot of the browser.
+
+# 2\. Saves the screenshot under `target/extent-reports/screenshots/`.
+
+# 3\. Embeds the screenshot in the corresponding ExtentReports test entry.
+
+# 4\. Records the failure details.
+
+# 
+
+# The screenshot capture functionality was verified locally using a controlled test failure. The original test assertion was subsequently restored, and all 11 tests passed again.
+
+# 
+
+# \## Continuous Integration
+
+# 
+
+# GitHub Actions is integrated into the project to automate Selenium test execution.
+
+# 
+
+# The CI workflow is configured to:
+
+# 
+
+# \- Trigger on pushes and pull requests to the main branch.
+
+# \- Set up the Java environment.
+
+# \- Execute Maven test commands.
+
+# \- Run Selenium TestNG test cases using headless Chrome.
+
+# \- Generate TestNG and ExtentReports HTML reports.
+
+# \- Upload both report directories as downloadable workflow artifacts.
+
+# 
+
+# The combined report artifact is named `selenium-test-reports`.
+
+# 
+
+# \## Project Structure
+
+# 
+
+# ```text
+
+# QA-Testing-Lab-All-Frontend-Elements/
+
+# │
+
+# ├── .github/                         (Workflow configured at repository root)
+
+# │
+
+# ├── src/
+
+# │   ├── main/
+
+# │   │   └── java/
+
+# │   │       ├── base/
+
+# │   │       │   └── BasePage.java
+
+# │   │       └── pages/
+
+# │   │           ├── AlertsPage.java
+
+# │   │           ├── CheckboxesRadioButtonsPage.java
+
+# │   │           ├── DragDropPage.java
+
+# │   │           ├── DropDownsPage.java
+
+# │   │           ├── DynamicElementsPage.java
+
+# │   │           ├── FileUploadPage.java
+
+# │   │           ├── FormElementsPage.java
+
+# │   │           ├── HomePage.java
+
+# │   │           ├── IframesPage.java
+
+# │   │           └── TablesPage.java
+
+# │   │
+
+# │   └── test/
+
+# │       ├── java/
+
+# │       │   ├── base/
+
+# │       │   │   └── BaseTest.java
+
+# │       │   ├── listeners/
+
+# │       │   │   └── ExtentReportListener.java
+
+# │       │   └── tests/
+
+# │       │       └── FirstTest.java
+
+# │       │
+
+# │       └── resources/
+
+# │           ├── SeleniumProject/
+
+# │           └── test-data/
+
+# │
+
+# ├── Test\_Documentation/
+
+# │   └── Selenium\_Test\_Cases.xlsx
+
+# │
+
+# ├── pom.xml
+
+# └── README.md
+
+# ```
+
+# 
+
+# \## Running the Tests Locally
+
+# 
+
+# \*\*Prerequisites\*\*
+
+# 
+
+# \- Java Development Kit (JDK)
+
+# \- Maven
+
+# \- Google Chrome
+
+# \- IntelliJ IDEA (or another Java IDE)
+
+# 
+
+# \*\*Steps\*\*
+
+# 
+
+# 1\. Clone or download the repository.
+
+# 2\. Open the project in IntelliJ IDEA.
+
+# 3\. Allow Maven to resolve the project dependencies.
+
+# 4\. Execute the Maven `test` lifecycle goal.
+
+# 
+
+# The automated test suite will execute using Chrome in headless mode.
+
+# 
+
+# \## Future Enhancements
+
+# 
+
+# \- Expand automated frontend test coverage.
+
+# \- Improve test execution diagnostics.
+
+# \- Add more detailed test execution logging.
+
+# \- Extend automation coverage for additional application scenarios.
+

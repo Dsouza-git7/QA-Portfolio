@@ -35,4 +35,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: testng-reports
-          path: target/surefire-reports/
+          path: 06-QA-Testing-Lab-All-Frontend-Elements/target/surefire-reports/
